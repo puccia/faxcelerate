@@ -1,0 +1,13 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block extrahead %}
+{{ block.super }}
+{% if refresh %}
+<meta http-equiv="refresh" content="{{ refresh }}"/>
+{% endif %}
+<script type="text/javascript" src="/support/js/jquery.js"></script>
+<script type="text/javascript" src="/support/js/hovertip.js"></script>
+<script type="text/javascript" src="/support/js/init.js"></script>
+{% endblock %}
+{% block bodyclass %}{{ block.super }} fax-change-list{% endblock %}
+{% block object-tools %}<ul class="object-tools"><li>{% if deleted %}<a href="?" class="viewsitelink">{% trans 'Show not deleted' %}</a>{% else %}<a href="?deleted=1" class="viewsitelink">{% trans 'Show deleted' %}</a>{% endif %}</li></ul>{% endblock %}

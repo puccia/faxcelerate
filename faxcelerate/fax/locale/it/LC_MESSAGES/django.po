@@ -1,0 +1,333 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-03 19:45+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: faxinfo.py:49
+msgid "resolution"
+msgstr "risoluzione"
+
+#: faxinfo.py:49
+msgid "paper"
+msgstr "carta"
+
+#: faxinfo.py:49
+msgid "bitrate"
+msgstr "bitrate"
+
+#: faxinfo.py:49
+msgid "mode"
+msgstr "modalità"
+
+#: faxinfo.py:49
+msgid "ecm"
+msgstr "ECM"
+
+#: filterspec.py:22 filterspec.py:64
+msgid "All"
+msgstr "Tutti"
+
+#: filterspec.py:25
+msgid "Unfiled"
+msgstr "Non archivati"
+
+#: filterspec.py:65
+msgid "Going to expire"
+msgstr "Non ancora scaduti"
+
+#: filterspec.py:66
+msgid "Without expiration"
+msgstr "Senza scadenza"
+
+#: filterspec.py:67
+msgid "Expired"
+msgstr "Scaduti"
+
+#: models.py:23
+msgid "Name"
+msgstr "Nome"
+
+#: models.py:25
+msgid "inside folder"
+msgstr "sotto la cartella"
+
+#: models.py:26
+msgid ""
+"This folder's parent in the hierarchy. This folder will be shown as 'under', "
+"or 'inside' its parent."
+msgstr ""
+"Il genitore di questa cartella nella gerarchia. Questa cartella si vedrà "
+"come 'sotto' o 'all'interno' del genitore."
+
+#: models.py:49
+msgid "folder"
+msgstr "cartella"
+
+#: models.py:50
+msgid "folders"
+msgstr "cartelle"
+
+#: models.py:117
+msgid "progressive ID"
+msgstr "n. progressivo"
+
+#: models.py:119
+msgid "Calling station ID"
+msgstr "ID della stazione chiamante"
+
+#: models.py:121 models.py:296 models.py:303
+msgid "calling number"
+msgstr "numero chiamante"
+
+#: models.py:123
+msgid "called number"
+msgstr "numero chiamato"
+
+#: models.py:125
+msgid "TIFF file name"
+msgstr "Nome del file TIFF"
+
+#: models.py:127
+msgid "date"
+msgstr "data"
+
+#: models.py:129
+msgid "time to receive"
+msgstr "durata ricezione"
+
+#: models.py:131
+msgid "total connection time"
+msgstr "tempo totale di collegamento"
+
+#: models.py:133
+msgid "pages"
+msgstr "pagine"
+
+#: models.py:136
+msgid "expiration date"
+msgstr "scadenza"
+
+#: models.py:138
+msgid ""
+"An expiry date after which the message will no longer be useful. You can set "
+"this for time-limited promotions you do not want to display after their "
+"validity, or you can leave this blank."
+msgstr ""
+"Una data di scadenza dopo la quale il messaggio non sarà più utile. Si può "
+"impostare per promozioni limitate nel tempo che non si vogliono mostrare "
+"dopo la loro validità, o si può lasciare vuota."
+
+#: models.py:145
+msgid "filed in folders"
+msgstr "archiviato sotto"
+
+#: models.py:147
+msgid ""
+"A list of folders under which this message will be found.  You can specify "
+"one or more folders, so that the message will be visible under each of them."
+msgstr ""
+"Una lista di cartelle sotto le quali si troverà questo messaggio. Potete "
+"specificare una o più cartelle, in modo che il messaggio sia visibile sotto "
+"ciascuna."
+
+#: models.py:153 models.py:289
+msgid "sender"
+msgstr "mittente"
+
+#: models.py:155
+msgid ""
+"The sender of this fax message. Set this to have it displayed alongside the "
+"message, and to enable automatic identification in the future."
+msgstr ""
+"Il mittente di questo messaggio fax.  Va impostato per poterlo visualizzare "
+"a fianco del messaggio, e per abilitare il riconoscimento automatico nel "
+"futuro."
+
+#: models.py:159
+msgid "error reason"
+msgstr "motivo dell'errore"
+
+#: models.py:161
+msgid "Notes"
+msgstr "Note"
+
+#: models.py:162
+msgid "Deleted"
+msgstr "Eliminato"
+
+#: models.py:186
+msgid "Fax message"
+msgstr "Messaggio fax"
+
+#: models.py:187
+msgid "Fax messages"
+msgstr "Messaggi fax"
+
+#: models.py:199
+msgid "Station"
+msgstr "Stazione"
+
+#: models.py:205 models.py:299 models.py:314 templates/fax/fax_tools.html:22
+msgid "Sender"
+msgstr "Mittente"
+
+#: models.py:209 templates/fax/fax_tools.html:23
+msgid "Filed under"
+msgstr "Archiviato sotto"
+
+#: models.py:213
+msgid "Short ID"
+msgstr "N."
+
+#: models.py:218
+msgid " (deleted)"
+msgstr " (eliminato)"
+
+#: models.py:220
+#, python-format
+msgid " on %s"
+msgstr " del %s"
+
+#: models.py:222
+#, python-format
+msgid " from %s"
+msgstr " da %s"
+
+#: models.py:230
+msgid "page thumbnails"
+msgstr "miniature delle pagine"
+
+#: models.py:243
+msgid "notes"
+msgstr "Note"
+
+#: models.py:284
+msgid "name"
+msgstr "nome"
+
+#: models.py:290
+msgid "senders"
+msgstr "mittenti"
+
+#: models.py:304
+msgid "calling numbers"
+msgstr "numeri chiamanti"
+
+#: models.py:311 models.py:318
+msgid "calling station ID"
+msgstr "ID della stazione chiamante"
+
+#: models.py:319
+msgid "calling station IDs"
+msgstr "ID delle stazioni"
+
+#: views.py:92
+msgid "The calling number"
+msgstr "Il numero chiamante"
+
+#: views.py:96
+msgid "The calling station ID"
+msgstr "L'ID di stazione"
+
+#: views.py:113
+#, python-format
+msgid "%s was learned."
+msgstr "%s è stato imparato."
+
+#: views.py:115
+#, python-format
+msgid " The correct sender was set in %s more fax messages."
+msgstr " È stato impostato il mittente corretto in altri %s messaggi fax."
+
+#: views.py:174
+msgid "The fax was queued for printing."
+msgstr "Il fax è stato messo in coda per la stampa."
+
+#: templates/admin/base_site.html:7 templates/admin/base_site.html.py:10
+msgid "Gestione archivio fax"
+msgstr "Gestione archivio fax"
+
+#: templates/admin/fax/fax/change_form.html:3 templates/fax/fax_detail.html:12
+msgid "Gestione archivio telefax"
+msgstr "Gestione archivio telefax"
+
+#: templates/admin/fax/fax/change_form.html:6
+msgid "Info on this fax message"
+msgstr "Informazioni su questo messaggio fax"
+
+#: templates/admin/fax/fax/change_form.html:12
+msgid "Pages"
+msgstr "Pagine"
+
+#: templates/admin/fax/fax/change_list.html:10
+msgid "Show not deleted"
+msgstr "Mostra non eliminati"
+
+#: templates/admin/fax/fax/change_list.html:10
+msgid "Show deleted"
+msgstr "Mostra eliminati"
+
+#: templates/fax/fax_detail.html:33
+msgid "Home page"
+msgstr "Pagina iniziale"
+
+#: templates/fax/fax_tools.html:7
+msgid "Download as a PDF file "
+msgstr "Scarica come file PDF "
+
+#: templates/fax/fax_tools.html:8
+msgid "Download as a TIFF file "
+msgstr "Scarica come file TIFF "
+
+#: templates/fax/fax_tools.html:11
+msgid "Print on"
+msgstr "Stampa su"
+
+#: templates/fax/fax_tools.html:16
+msgid "Undelete "
+msgstr "Recupera "
+
+#: templates/fax/fax_tools.html:16
+msgid "Delete"
+msgstr "Elimina"
+
+#: templates/fax/fax_tools.html:20
+msgid "Received on"
+msgstr "Ricevuto il"
+
+#: templates/fax/fax_tools.html:21
+msgid "Expires on"
+msgstr "Scade il"
+
+#: templates/fax/fax_tools.html:23
+msgid "File again"
+msgstr "Riarchivia"
+
+#: templates/fax/fax_tools.html:27
+msgid "Total pages"
+msgstr "Pagine totali"
+
+#: templates/fax/fax_tools.html:28
+msgid "Received on number"
+msgstr "Ricevuto sul numero"
+
+#: templates/fax/fax_tools.html:29
+msgid "from number"
+msgstr "dal numero"
+
+#: templates/fax/fax_tools.html:30 templates/fax/fax_tools.html.py:32
+msgid "Learn"
+msgstr "Impara"

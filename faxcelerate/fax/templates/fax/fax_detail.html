@@ -1,0 +1,48 @@
+{% extends 'admin/fax/fax/change_form.html' %}
+{% load i18n %}
+
+{% block bodyclass %}faxdetails{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script type='text/javascript' src='/support/js/jquery.js'></script>
+<script type='text/javascript' src='/support/js/fax_detail.js'></script>
+<style>
+<!--
+	div.faxpages, div.faxpage { width: {{ faxpagewidth }}px; }
+	div.faxpage img { width: {{ faxwidth }}; }
+-->
+</style>
+{% endblock %}
+
+{% block title %}{{ object|escape }} | {% trans 'Gestione archivio telefax' %}{% endblock %}
+
+{% block content %}
+<div class="faxpages">
+	<span class="info commid">{{ object.comm_id }}</span>
+{% for links in object.related_image.thumbnail_links %}
+<div class="faxpage">
+	<span class="info pagenumber">{{ links.page }}</span>
+	<ul class="rotation-tools">
+		<li class="rotate-left">&nbsp;</li>
+		<li class="rotate-right">&nbsp;</li>
+	</ul>
+	<img src='{{ links.full }}'/>
+</div>
+{% endfor %}
+</div>
+{% block faxtools %}
+<div class="faxtools">
+{{ object.tools_html }}
+</div>
+{% endblock %}
+{% endblock %}
+
+{% block content_title %}<h1>{{ object }}</h1>{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs"><a href='../../admin/'>
+{% trans 'Home page' %}</a> &rsaquo;
+<a href='/admin/fax/fax'>Fax</a> &rsaquo;
+{{ object }}</div>
+{% endblock %}

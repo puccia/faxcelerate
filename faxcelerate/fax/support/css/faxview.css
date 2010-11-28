@@ -1,0 +1,112 @@
+body.fax-change-list .row1 {
+	background-color: #aaa;
+}
+
+body.fax-change-list .row2 {
+	background-color: #ccc;
+}
+
+body.fax-change-list .module table {
+	color: #111;
+}
+
+body.fax-change-list .module table .error-note {
+	color: #f11;
+}
+
+body.faxdetails #container {
+	background: #333;
+	color: #fff;
+}
+
+
+body.faxdetails #content h1 {
+	color: #fff;
+}
+
+.faxpage img {
+	border-color: #eee;
+	background-color: #333;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	margin-right: 40px;
+}
+
+body.faxdetails ul li {
+	font-size: 100%;
+	list-style-type: none;
+	margin-bottom: 10px;
+}
+
+.faxpages {
+	float: left;
+}
+
+.faxtools {
+	margin-top: 40px;
+}
+
+.faxtools a, .faxtools a:visited {
+	color: #f88;
+}
+
+.faxtools a:hover {
+	color: #f44;
+}
+
+.faxtools dl.main dt {
+	font-weight: normal;
+}
+
+.faxtools dl.main dd {
+	font-weight: bold;
+}
+
+.faxtools dl.main dd a {
+	font-weight: normal;
+}
+
+body.faxdetails dl.notes, .topspace {
+	margin-top: 40px;
+}
+
+div.faxpage ul.rotation-tools li {
+	height: 32px;
+	margin-bottom: 8px;
+}
+
+div.faxpage ul.rotation-tools {
+	width: 32px;
+	float: right;
+	margin-right: 30px;
+}
+
+.faxpages, .faxpage, .faxpage .rotation-tools, .faxpage .rotation-tools li, .faxpage img {
+	margin: 0px;
+	padding: 0px;
+	border: none;
+}
+
+div.faxpage {
+	margin-top: 30px;
+}
+
+.faxpage img {
+	width: 740px;
+}
+
+.faxpage {
+width: 800px;
+}
+
+ul.rotation-tools li.rotate-left {
+	background:  url('rotate-left.png') transparent left top no-repeat;
+}
+
+ul.rotation-tools li.rotate-right {
+	background: url('rotate-right.png') transparent left top no-repeat;
+}
+
+.info {
+	display: none;
+}

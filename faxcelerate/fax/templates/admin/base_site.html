@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="/support/css/faxview.css" />
+{% endblock %}
+
+{% block title %}{{ title|escape }} | {% trans 'Gestione archivio fax' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Gestione archivio fax' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

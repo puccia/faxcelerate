@@ -1,0 +1,45 @@
+{% load i18n %}
+{% block extrahead %}
+<script type='text/javascript' src='/media/js/admin/RelatedObjectLookups.js'></script>
+{% endblock %}
+{% block faxtools %}
+<ul>
+	<li><a href='{% url fax-serve "pdf" fax.comm_id %}'>[ {% trans 'Download as a PDF file ' %} ]</a></li>
+	<li><a href='{% url fax-serve "tiff" fax.comm_id %}'>[ {% trans 'Download as a TIFF file ' %} ]</a></li>
+	{% if not fax.folder_list %}<li><a href='/admin/fax/fax/{{ fax.comm_id }}/' onclick="return showAddAnotherPopup(this);">[ Archivia ]</a></li>{% endif %}
+	{% for printer in fax.available_printers %}
+	<li><a href='{% url fax-print fax.comm_id printer %}'>[ {% trans 'Print on' %} {{ printer }} ]</a>
+	{% endfor %}
+</ul>
+
+<ul class='topspace'>
+	<li>{% if fax.deleted %}<a href='{% url fax-undelete fax.comm_id %}'>[ {% trans 'Undelete ' %}]</a>{% else %}<a href='{% url fax-delete fax.comm_id %}'>[ {% trans 'Delete' %} ]</a>{% endif %}</li>
+</ul>
+
+<dl class="main">
+<dt>{% trans 'Received on' %}</dt> <dd>{{ fax.received_on|date:"l j F Y, G:i" }}</dd>
+{% if fax.expiry %}<dt>{% trans 'Expires on' %}</dt> <dd>{{ fax.expiry|date:"l j F Y" }}</dd>{% endif %}
+{% if fax.sender %}<dt>{% trans 'Sender' %}</dt> <dd>{{ fax.sender }}</dd>{% endif %}
+{% if fax.folder_list %}<dt>{% trans 'Filed under' %}</dt> <dd>{{ fax.folder_list }} <a href='/admin/fax/fax/{{ fax.comm_id }}/' onclick="return showAddAnotherPopup(this);">[ {% trans 'File again' %} ]</a></dd>{% endif %}
+</dl>
+
+<dl class="main notes">
+<dt>{% trans 'Total pages' %}</dt> <dd>{{ fax.pages }}</dd>
+{% if fax.msn %}<dt>{% trans 'Received on number' %}</dt> <dd>{{ fax.msn }}</dd>{% endif %}
+{% if fax.caller_id %}<dt>{% trans 'from number' %}</dt> <dd>{{ fax.caller_id }}
+	{% if fax.caller_id_storable %}<a href='{% url fax-bind "cid" fax.comm_id %}' class='store_caller_id'>[ {% trans 'Learn' %} ]</a>{% endif %}</dd>{% endif %}
+{% if fax.station_id %}<dt>ID stazione</dt> <dd>{{ fax.station_id }}
+	{% if fax.station_id_storable %}<a href='{% url fax-bind "tsi" fax.comm_id %}' class='store_station_id'>[ {% trans 'Learn' %} ]</a>{% endif %}
+	</dd>{% endif %}
+</dl>
+{% if fax.notes %}
+<dl class="notes">
+<dt>Note</dt> <dd>{{ fax.notes|escape }}</dd>
+</dl>
+{% endif %}
+
+<dl class="notes">
+	{{ fax.info.html_summary }}
+</dl>
+
+{% endblock %}

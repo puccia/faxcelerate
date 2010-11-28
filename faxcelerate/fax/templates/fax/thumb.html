@@ -1,0 +1,9 @@
+
+	{% for links in images %}
+	<span id='target-{{ commid }}-page{{ links.page }}'>
+		<a id='mainlink-{{ commid }}' href="{% url fax-view commid %}"><img id='thumbnail-{{ commid }}-page{{ links.page }}' src='{{ links.small }}' 
+		style='margin-right: 15px; border: dotted 1px;' alt=''/></a>
+	</span><span id='tip-{{ commid }}-page{{ links.page }}' class='hovertip'>
+		<a id='tiplink-{{ commid }}-page{{ links.page }}' href='{% url fax-view commid %}'>{{ links.big }}</a>
+	</span>
+	{% endfor %}
