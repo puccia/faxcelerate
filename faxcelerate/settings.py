@@ -73,9 +73,17 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # required by django.contrib.admin anyway
+    "django.core.context_processors.auth",
+    # required by grappelli
+    "django.core.context_processors.request",
+)
+
 INSTALLED_APPS = (
     'faxcelerate.fax',
     'south',
+    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
