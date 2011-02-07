@@ -400,7 +400,7 @@ class FaxAdmin(admin.ModelAdmin):
                     parms[str(k)] = False
         request.GET = new_qd
         q = super(FaxAdmin, self).queryset(request)
-        q = q.annotate(Count('in_folders')).filter(**parms)
+        # q = q.annotate(Count('in_folders')).filter(**parms)
         return q
         
     def changelist_view(self, request, extra_context=None):
