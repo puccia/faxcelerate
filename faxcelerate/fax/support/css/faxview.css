@@ -14,6 +14,10 @@ body.fax-change-list .module table .error-note {
 	color: #f11;
 }
 
+body {
+	background: #333;
+}
+
 body.faxdetails #container {
 	background: #333;
 	color: #fff;
