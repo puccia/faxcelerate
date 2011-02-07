@@ -87,12 +87,8 @@ div.faxpage {
 	margin-top: 30px;
 }
 
-.faxpage img {
-	width: 740px;
-}
-
 .faxpage {
-width: 800px;
+	width: 800px;
 }
 
 ul.rotation-tools li.rotate-left {

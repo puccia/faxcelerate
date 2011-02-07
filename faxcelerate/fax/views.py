@@ -131,9 +131,9 @@ def check_deleted(request):
         pass
     return {}
     
-def width_calculation(request):
+def width_calculation():
     ICON_WIDTH = 32
-    from faxcelerate import settings
+    from django.conf import settings
     return { 'faxwidth': settings.FAX_WIDTH,
         'faxpagewidth': settings.FAX_WIDTH + ICON_WIDTH + 30,
         }
