@@ -17,8 +17,6 @@ urlpatterns = patterns(prefix,
     # Example:
     #(r'^faxcelerate/', include('faxcelerate.foo.urls')),
     (r'^fax/', include('faxcelerate.fax.urls')),
-	#(r'^admin/(fax)/(fax)/(\d+)/', 'faxcelerate.fax.views.change_stage'),
-	#(r'^admin/(fax)/(fax)/', 'faxcelerate.fax.views.change_list'),
 
     # Uncomment this for admin:
 

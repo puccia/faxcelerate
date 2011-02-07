@@ -138,15 +138,6 @@ def width_calculation(request):
         'faxpagewidth': settings.FAX_WIDTH + ICON_WIDTH + 30,
         }
 
-def change_stage(request, *args, **kwargs):
-    import django.contrib.admin.views.main
-    r = django.contrib.admin.views.main.change_stage(request, *args, **kwargs)
-    if request.method == 'POST':
-        Fax.objects.get(pk=args[2]).fix_folders()
-    if r.status_code == 302:
-        return HttpResponse('<script>window.opener.location.href = window.opener.location.href; window.close();</script>')
-    return r
-    
 def delete(request, commid=None):
     # DO NOT use the delete() method!
     fax = Fax.objects.get(comm_id=commid)
