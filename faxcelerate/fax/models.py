@@ -16,14 +16,6 @@ import filterspec
 import image
 import extend_cache
 
-#class FolderManager(models.Manager):
-#   def wrapper(self, *args, **kwargs):
-#       for key in kwargs:
-#           if kwargs[key].endswith('__in_subtree')
-#   gqs = super(FolderManager, self).get_query_set()
-
-# Create your models here.
-
 class Folder(models.Model):
     """ This class describes an archival folder.
     """
