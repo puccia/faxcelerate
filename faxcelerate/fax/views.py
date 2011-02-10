@@ -4,6 +4,7 @@
 
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import user_passes_test
 
 from image import FaxImage
 from faxcelerate.fax.models import Fax, SenderCID, SenderStationID
@@ -37,7 +38,8 @@ def based_on_fax_image(func):
     def wrapper(request, commid=None, *args, **kwargs):
         # Get the fax image object; return 404 if not found
         try:
-            img = FaxImage(Fax.objects.get(pk=commid))
+            img = FaxImage(Fax.objects.visible_to_user(request.user
+                ).get(pk=commid))
         except Fax.DoesNotExist:
             raise Http404
         # Try to satisfy conditional GET
@@ -84,14 +86,14 @@ def serve_file(request, filetype, commid=None, img=None):
         generator = 'generate_tiff_stream'
     else:
         raise TypeError('Unknown filetype: %s' % filetype)
-    fax = Fax.objects.get(pk=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(pk=commid)
     response = HttpResponse(mimetype=mimetype)
     getattr(img, generator)(out_file=response)
     response['Content-Disposition'] = 'attachment; filename=' + filename % fax.short_id();
     response["Last-Modified"] = rfc822.formatdate(img.statobj[stat.ST_MTIME])
     return response
     
-    
+@user_passes_test(lambda u: u.is_superuser)
 def bind(request, commid=None, metadata_item=None):
     if metadata_item == 'cid':
         table = SenderCID
@@ -140,14 +142,14 @@ def width_calculation():
 
 def delete(request, commid=None):
     # DO NOT use the delete() method!
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.deleted = True
     fax.save()
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
 
 def undelete(request, commid=None):
     # DO NOT use the delete() method!
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.deleted = False
     fax.save()
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
@@ -156,7 +158,8 @@ def print_fax(request, commid=None, printer=None):
     from faxcelerate import settings
     if printer is None:
         printer = settings.PRINTERS[0]
-    FaxImage(Fax.objects.get(comm_id=commid)).print_fax(printer)
+    FaxImage(Fax.objects.visible_to_user(request.user
+        ).get(comm_id=commid)).print_fax(printer)
     request.user.message_set.create(message=_('The fax was queued for printing.'))
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
 
@@ -164,7 +167,7 @@ def rotate(request):
     commid = request.REQUEST['commid']
     page = int(request.REQUEST['page'])
     rtype = request.REQUEST['type']
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.rotation.rotate(rtype, page)
     fax.save()
     from django.utils import simplejson
@@ -172,3 +175,12 @@ def rotate(request):
         simplejson.dumps({'newsrc':
             fax.related_image().thumbnail_links(page)['full']}),
         mimetype='application/json')
+
+def fax_detail(request, *args, **kwargs):
+    from django.views.generic.list_detail import object_detail
+    # Tune queryset
+    from fax.models import FaxManager
+    kwargs['queryset'] = FaxManager.filter_queryset_for_user(
+        kwargs['queryset'], request.user)
+    return object_detail(request, *args, **kwargs)
+    
