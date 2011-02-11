@@ -5,7 +5,6 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.core.cache import cache
 from django.utils.translation import gettext_lazy as _, gettext as __
-from django.contrib import admin
 from django.shortcuts import render_to_response
 from django import template
 
@@ -401,70 +400,6 @@ class Fax(models.Model):
             return 'Out'
         else:
             return 'In'
-
-from django.db.models import Count
-from django.contrib.admin.views.main import ChangeList as OrigChangeList
-from django.contrib.admin.options import IncorrectLookupParameters
-from django.core.exceptions import PermissionDenied
-
-
-class FaxAdmin(admin.ModelAdmin):
-    #list_filter = ['outbound', 'received_on', 'expiry', 'sender', 'in_folders']
-    list_filter = ['outbound', 'received_on',  'in_folders']
-    list_display = ('short_id', 'inout', 'sender_field', 'sender_ident',
-        'received_on', 'folder_list', 'admin_notes', 'admin_thumbs')
-    list_per_page = 10
-    date_hierarchy = 'received_on'
-    fieldsets = (
-        ('Metadata', {
-            'fields': ('expiry', 'sender', 'in_folders', 'notes')
-        }),
-    )
-    js = (
-        '/support/js/jquery.js',
-        '/support/js/hovertip.js',
-        '/support/js/init.js'
-        )
-    save_on_top = True
-    search_fields = ['station_id', 'caller_id', 'notes']
-
-    def queryset(self, request):
-        if 'deleted' in request.GET and request.GET['deleted']:
-            parms = {'deleted__exact': True}
-        else:
-            parms = {'deleted__exact': False}
-        
-        # Post-process __isnull parts
-        new_qd = request.GET.copy()
-        for k, v in new_qd.items():
-            if k.endswith('__isnull'):
-                del new_qd[k]
-                if v == 'True' or v == '1':
-                    parms[str(k)] = True
-                else:
-                    parms[str(k)] = False
-        request.GET = new_qd
-        base_qs = super(FaxAdmin, self).queryset(request)
-        return FaxManager.filter_queryset_for_user(base_qs, request.user)
-    
-    def changelist_view(self, request, extra_context=None):
-        if 'deleted' in request.GET and request.GET['deleted']:
-            if not extra_context:
-                extra_context = {}
-            extra_context.update({'deleted': True})
-        return super(FaxAdmin, self).changelist_view(request, extra_context)
-
-    def change_view(self, request, object_id, extra_content=None):
-        if not request.user.is_superuser:
-            raise PermissionDenied
-        import django.contrib.admin.views.main
-        from django.http import HttpResponse
-        r = super(FaxAdmin, self).change_view(request, object_id, extra_content)
-        if request.method == 'POST':
-            Fax.objects.get(pk=object_id).fix_folders()
-        if r.status_code == 302:
-            return HttpResponse('<script>window.opener.location.href = window.opener.location.href; window.close();</script>')
-        return r
 
 class Sender(models.Model):
     label = models.CharField(_('name'),max_length=80, unique=True)
