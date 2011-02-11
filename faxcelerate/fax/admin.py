@@ -61,6 +61,8 @@ class FaxAdmin(admin.ModelAdmin):
             return HttpResponse('<script>window.opener.location.href = window.opener.location.href; window.close();</script>')
         return r
 
+class PhonebookAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'number')
 
 admin.site.register(Folder)
 admin.site.register(Fax, FaxAdmin)
@@ -68,7 +70,7 @@ admin.site.register(Sender)
 admin.site.register(SenderCID)
 admin.site.register(SenderStationID)
 admin.site.register(FolderACL)
-
+admin.site.register(PhonebookEntry, PhonebookAdmin)
 from django.contrib.auth import admin as auth_admin
 #admin.site.register(auth_admin.User, auth_admin.UserAdmin)
 

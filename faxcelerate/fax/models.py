@@ -160,7 +160,6 @@ class FaxManager(models.Manager):
     def visible_to_user(self, user):
         return self.filter_queryset_for_user(self.get_query_set(), user)
 
-
 class Fax(models.Model):
     """
     This class describes a single received fax message.
@@ -401,15 +400,31 @@ class Fax(models.Model):
             return 'In'
 
 class Sender(models.Model):
+    """
+    These objects are now usable for OUTGOING fax numbers too, so we changed
+    their verbose names for clarity.
+    """
     label = models.CharField(_('name'),max_length=80, unique=True)
     class Meta:
         ordering = ('label',)
-        verbose_name = _('sender')
-        verbose_name_plural = _('senders')
+        verbose_name = _('correspondent')
+        verbose_name_plural = _('correspondents')
     
     def __str__(self):
         return self.label.encode('utf-8')
+
+class PhonebookEntry(models.Model):
+    subject = models.ForeignKey(Sender, null=False)
+    number = models.CharField(max_length=32)
     
+    def __unicode__(self):
+        return u'%s: %s' % (self.subject, self.number)
+        
+    class Meta:
+        ordering = ('subject',)
+        verbose_name = _('phonebook entry')
+        verbose_name_plural = _('phonebook entries')
+
 class SenderCID(models.Model):
     caller_id = models.CharField(_('calling number'),
         max_length=32)
