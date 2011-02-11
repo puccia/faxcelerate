@@ -180,7 +180,7 @@ def fax_detail(request, *args, **kwargs):
     from django.views.generic.list_detail import object_detail
     # Tune queryset
     from fax.models import FaxManager
-    kwargs['queryset'] = FaxManager.filter_queryset_for_user(
+    kwargs['queryset'] = Fax.objects.filter_queryset_for_user(
         kwargs['queryset'], request.user)
     return object_detail(request, *args, **kwargs)
     

@@ -145,7 +145,6 @@ class Folder(models.Model):
         return desc
 
 class FaxManager(models.Manager):
-    @classmethod
     def filter_queryset_for_user(self, queryset, user):
         if user.is_superuser:
             return self
