@@ -194,20 +194,37 @@ def fax_send(request):
     
     class SendFaxForm(forms.Form):
         file = forms.FileField()
-        numberlist = forms.CharField(widget=forms.HiddenInput)
+        numberlist = forms.CharField(required=False, widget=forms.HiddenInput)
 
     class PhonebookForm(forms.Form):
         phonebook = forms.MultipleChoiceField(choices=[(x.number, unicode(x))
             for x in PhonebookEntry.objects.all()])
 
+    pbform = PhonebookForm()
+    server_response = None
     if request.method == 'GET':
         form = SendFaxForm()
-        pbform = PhonebookForm()
         return render_to_response('fax/fax_send.html', {'form': form,
             'phonebook': pbform, 'adminform': {'model_admin': None}})
     elif request.method == 'POST':
-        form = SendFaxForm(request)
-        print form.numberlist
+        form = SendFaxForm(request.POST, request.FILES)
+        if form.is_valid():
+            dest_numbers = form.cleaned_data['numberlist'].split('~')
+            # Prepare command
+            command = ['/usr/bin/sendfax', '-n']
+            for number in dest_numbers:
+                command += ['-d', number]
+            import subprocess
+            sendfax = subprocess.Popen(command, stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+            # We have a single file
+            out, err = sendfax.communicate(request.FILES['file'].read())
+            server_response = '\n'.join([out, err])
+        return render_to_response('fax/fax_send.html', {'form': form,
+            'phonebook': pbform, 'adminform': {'model_admin': None},
+            'server_response': server_response})
+        # Remove when done
         raise Exception('Not yet implemented')
 
     else:

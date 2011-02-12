@@ -12,7 +12,15 @@
 
 {% block content %}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
+
+{% if server_response %}
+<p>Server response:</p>
+<pre>
+{{ server_response }}
+</pre>
+{% endif %}
+
 <div id="faxPage">
     <p>{% trans 'Choose a file to send as a fax' %}:</p>
 {{form}}
