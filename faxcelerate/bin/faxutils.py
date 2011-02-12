@@ -135,3 +135,5 @@ if __name__ == '__main__':
 		for fax in Fax.objects.all():
 			f = image.FaxImage(fax)
 			f.cache_thumbnails()
+			del f
+
