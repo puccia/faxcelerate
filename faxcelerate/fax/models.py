@@ -469,7 +469,7 @@ class FolderACL(models.Model):
     
     @classmethod
     def get_access_type_string(cls, type_number):
-        return self.access_type_choices[type_number-1][1]
+        return cls.access_type_choices[type_number-1][1]
     
     folder = models.ForeignKey(Folder, null=False)
     group = models.ForeignKey(Group, null=True, blank=True)
