@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os, sys
 from datetime import datetime
 
@@ -14,8 +16,6 @@ from faxcelerate import settings
 from faxcelerate.fax.models import Fax
 
 TIFF_OUTPUT_DIR = os.path.join(settings.FAX_SPOOL_DIR, 'senttiff')
-
-
 
 if __name__ == '__main__':
     qfile, why = sys.argv[1:3]
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     print info
 
     # Exit if job is not done
-    if info['state'] != '7':
+    if int(info['state']) < 7:
         sys.exit(1)
 
     error_message = None

@@ -211,7 +211,7 @@ def fax_send(request):
         if form.is_valid():
             dest_numbers = form.cleaned_data['numberlist'].split('~')
             # Prepare command
-            command = ['/usr/bin/sendfax', '-n']
+            command = ['/usr/bin/sendfax', '-s', 'A4', '-R', '-n']
             for number in dest_numbers:
                 command += ['-d', number]
             import subprocess
