@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 from image import FaxImage
 from faxcelerate.fax.models import Fax, SenderCID, SenderStationID
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotModified, Http404
+from django.shortcuts import render_to_response
 import stat
 import rfc822
 
@@ -183,4 +184,32 @@ def fax_detail(request, *args, **kwargs):
     kwargs['queryset'] = Fax.objects.filter_queryset_for_user(
         kwargs['queryset'], request.user)
     return object_detail(request, *args, **kwargs)
+    
+def fax_send(request):
+    """
+    Display a web page to send a new fax, or perform the action.
+    """
+    from django import forms
+    from fax.models import PhonebookEntry
+    
+    class SendFaxForm(forms.Form):
+        file = forms.FileField()
+        numberlist = forms.CharField(widget=forms.HiddenInput)
+
+    class PhonebookForm(forms.Form):
+        phonebook = forms.MultipleChoiceField(choices=[(x.number, unicode(x))
+            for x in PhonebookEntry.objects.all()])
+
+    if request.method == 'GET':
+        form = SendFaxForm()
+        pbform = PhonebookForm()
+        return render_to_response('fax/fax_send.html', {'form': form,
+            'phonebook': pbform, 'adminform': {'model_admin': None}})
+    elif request.method == 'POST':
+        form = SendFaxForm(request)
+        print form.numberlist
+        raise Exception('Not yet implemented')
+
+    else:
+        raise Exception
     

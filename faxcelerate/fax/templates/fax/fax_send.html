@@ -1,0 +1,48 @@
+{% extends 'admin/fax/fax/change_form.html' %}
+{% load i18n %}
+
+{% block javascripts %}
+        {{ block.super }}
+<script type="text/javascript" src="/support/js/send.js"></script>
+<link href="/support/css/send.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+
+{% block title %}{% trans 'Send a fax' %} | {% trans 'Gestione archivio telefax' %}{% endblock %}
+
+{% block content %}
+
+<form method="post">
+<div id="faxPage">
+    <p>{% trans 'Choose a file to send as a fax' %}:</p>
+{{form}}
+</div>
+
+<div class="notice">
+<p>{% trans 'There are' %} <span id="recipientQuantity">0</span>
+{% trans 'recipients' %}.</p>
+</div>
+
+<div id="recipientList"></div>
+
+<div id="addFromTextBox">
+<p>{% trans 'Add a new recipient' %}: <input id="destinationNumber" length="16"/>
+<button id="destinationFieldAdd">Add</button></p>
+</div>
+
+<div id="addFromList">
+<p>Add from phonebook:</p>
+{{phonebook}}
+    </div>
+    <input type="submit" />
+</form>
+{% endblock %}
+
+{% block content_title %}<h1>{{ object }}</h1>{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs"><a href='../../admin/'>
+{% trans 'Home page' %}</a> &rsaquo;
+<a href='/admin/fax/fax'>Fax</a> &rsaquo;
+{{ object }}</div>
+{% endblock %}
