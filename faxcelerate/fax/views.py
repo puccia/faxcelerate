@@ -4,10 +4,12 @@
 
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import user_passes_test
 
 from image import FaxImage
 from faxcelerate.fax.models import Fax, SenderCID, SenderStationID
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotModified, Http404
+from django.shortcuts import render_to_response
 import stat
 import rfc822
 
@@ -37,7 +39,8 @@ def based_on_fax_image(func):
     def wrapper(request, commid=None, *args, **kwargs):
         # Get the fax image object; return 404 if not found
         try:
-            img = FaxImage(Fax.objects.get(pk=commid))
+            img = FaxImage(Fax.objects.visible_to_user(request.user
+                ).get(pk=commid))
         except Fax.DoesNotExist:
             raise Http404
         # Try to satisfy conditional GET
@@ -84,14 +87,14 @@ def serve_file(request, filetype, commid=None, img=None):
         generator = 'generate_tiff_stream'
     else:
         raise TypeError('Unknown filetype: %s' % filetype)
-    fax = Fax.objects.get(pk=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(pk=commid)
     response = HttpResponse(mimetype=mimetype)
     getattr(img, generator)(out_file=response)
     response['Content-Disposition'] = 'attachment; filename=' + filename % fax.short_id();
     response["Last-Modified"] = rfc822.formatdate(img.statobj[stat.ST_MTIME])
     return response
     
-    
+@user_passes_test(lambda u: u.is_superuser)
 def bind(request, commid=None, metadata_item=None):
     if metadata_item == 'cid':
         table = SenderCID
@@ -131,32 +134,23 @@ def check_deleted(request):
         pass
     return {}
     
-def width_calculation(request):
+def width_calculation():
     ICON_WIDTH = 32
-    from faxcelerate import settings
+    from django.conf import settings
     return { 'faxwidth': settings.FAX_WIDTH,
         'faxpagewidth': settings.FAX_WIDTH + ICON_WIDTH + 30,
         }
 
-def change_stage(request, *args, **kwargs):
-    import django.contrib.admin.views.main
-    r = django.contrib.admin.views.main.change_stage(request, *args, **kwargs)
-    if request.method == 'POST':
-        Fax.objects.get(pk=args[2]).fix_folders()
-    if r.status_code == 302:
-        return HttpResponse('<script>window.opener.location.href = window.opener.location.href; window.close();</script>')
-    return r
-    
 def delete(request, commid=None):
     # DO NOT use the delete() method!
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.deleted = True
     fax.save()
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
 
 def undelete(request, commid=None):
     # DO NOT use the delete() method!
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.deleted = False
     fax.save()
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
@@ -165,7 +159,8 @@ def print_fax(request, commid=None, printer=None):
     from faxcelerate import settings
     if printer is None:
         printer = settings.PRINTERS[0]
-    FaxImage(Fax.objects.get(comm_id=commid)).print_fax(printer)
+    FaxImage(Fax.objects.visible_to_user(request.user
+        ).get(comm_id=commid)).print_fax(printer)
     request.user.message_set.create(message=_('The fax was queued for printing.'))
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
 
@@ -173,7 +168,7 @@ def rotate(request):
     commid = request.REQUEST['commid']
     page = int(request.REQUEST['page'])
     rtype = request.REQUEST['type']
-    fax = Fax.objects.get(comm_id=commid)
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     fax.rotation.rotate(rtype, page)
     fax.save()
     from django.utils import simplejson
@@ -181,3 +176,57 @@ def rotate(request):
         simplejson.dumps({'newsrc':
             fax.related_image().thumbnail_links(page)['full']}),
         mimetype='application/json')
+
+def fax_detail(request, *args, **kwargs):
+    from django.views.generic.list_detail import object_detail
+    # Tune queryset
+    from fax.models import FaxManager
+    kwargs['queryset'] = Fax.objects.filter_queryset_for_user(
+        kwargs['queryset'], request.user)
+    return object_detail(request, *args, **kwargs)
+    
+def fax_send(request):
+    """
+    Display a web page to send a new fax, or perform the action.
+    """
+    from django import forms
+    from fax.models import PhonebookEntry
+    
+    class SendFaxForm(forms.Form):
+        file = forms.FileField()
+        numberlist = forms.CharField(required=False, widget=forms.HiddenInput)
+
+    class PhonebookForm(forms.Form):
+        phonebook = forms.MultipleChoiceField(choices=[(x.number, unicode(x))
+            for x in PhonebookEntry.objects.all()])
+
+    pbform = PhonebookForm()
+    server_response = None
+    if request.method == 'GET':
+        form = SendFaxForm()
+        return render_to_response('fax/fax_send.html', {'form': form,
+            'phonebook': pbform, 'adminform': {'model_admin': None}})
+    elif request.method == 'POST':
+        form = SendFaxForm(request.POST, request.FILES)
+        if form.is_valid():
+            dest_numbers = form.cleaned_data['numberlist'].split('~')
+            # Prepare command
+            command = ['/usr/bin/sendfax', '-n']
+            for number in dest_numbers:
+                command += ['-d', number]
+            import subprocess
+            sendfax = subprocess.Popen(command, stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+            # We have a single file
+            out, err = sendfax.communicate(request.FILES['file'].read())
+            server_response = '\n'.join([out, err])
+        return render_to_response('fax/fax_send.html', {'form': form,
+            'phonebook': pbform, 'adminform': {'model_admin': None},
+            'server_response': server_response})
+        # Remove when done
+        raise Exception('Not yet implemented')
+
+    else:
+        raise Exception
+    

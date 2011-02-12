@@ -5,9 +5,10 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.core.cache import cache
 from django.utils.translation import gettext_lazy as _, gettext as __
-from django.contrib import admin
 from django.shortcuts import render_to_response
 from django import template
+
+from django.contrib.auth.models import User, Group
 
 from faxcelerate.fax.faxinfo import FaxInfo
 from faxcelerate import settings
@@ -16,23 +17,47 @@ import filterspec
 import image
 import extend_cache
 
-#class FolderManager(models.Manager):
-#   def wrapper(self, *args, **kwargs):
-#       for key in kwargs:
-#           if kwargs[key].endswith('__in_subtree')
-#   gqs = super(FolderManager, self).get_query_set()
-
-# Create your models here.
+class FolderManager(models.Manager):
+    def visible_to_user(self, user):
+        if user.is_superuser:
+            return self.all()
+        else:
+            return [x for x in self.all() if x.is_allowed(1, user)]
 
 class Folder(models.Model):
     """ This class describes an archival folder.
     """
+    
+    objects = FolderManager()
+    
     label = models.CharField(_('Name'), max_length=40)
     parent = models.ForeignKey('Folder',
         verbose_name=_('inside folder'), blank=True,null=True,
         help_text=_("This folder's parent in the hierarchy. This "
         "folder will be shown as 'under', or 'inside' its parent."))
     order = models.IntegerField(blank=True,null=True,editable=False)
+
+    def is_allowed(self, permission, user):
+        if not isinstance(user, User):
+            raise TypeError("%s is not a user" % user)
+        qs = FolderACL.objects.filter(folder=self,access=permission)
+        def check(qs):
+            permissions = qs.filter(permit=True)
+            if len(permissions) > 0:
+                return True
+            permissions = qs.filter(permit=False)
+            if len(permissions) > 0:
+                return False
+        r = check(qs.filter(user=user))
+        if r is not None:
+            return r
+        r = check(qs.filter(group__in=user.groups.all()))
+        if r is not None:
+            return r
+        if self.parent is not None:
+            return self.parent.is_allowed(permission, user)
+        else:
+            return False
     
     @classmethod
     def fix_sorting(cls):
@@ -119,11 +144,28 @@ class Folder(models.Model):
                 queue.append(x)
         return desc
 
+class FaxManager(models.Manager):
+    def filter_queryset_for_user(self, queryset, user):
+        if user.is_superuser:
+            return self
+        
+        # Prepare query w/ admissible folders
+        from django.db.models import Q
+        Q_object = Q()
+        visible = Folder.objects.visible_to_user(user)
+        for folder in visible:
+            Q_object = (Q_object | Q(in_folders=folder))
+        return queryset.filter(Q_object).distinct()
+        
+    def visible_to_user(self, user):
+        return self.filter_queryset_for_user(self.get_query_set(), user)
 
 class Fax(models.Model):
     """
     This class describes a single received fax message.
     """
+    objects = FaxManager()
+    
     comm_id = models.CharField(_('progressive ID'),
         max_length=9,primary_key=True,editable=False)
     station_id = models.CharField(_('Calling station ID'),
@@ -357,81 +399,32 @@ class Fax(models.Model):
         else:
             return 'In'
 
-from django.db.models import Count
-from django.contrib.admin.views.main import ChangeList as OrigChangeList
-from django.contrib.admin.options import IncorrectLookupParameters
-from django.core.exceptions import PermissionDenied
-
-
-class FaxAdmin(admin.ModelAdmin):
-    #list_filter = ['outbound', 'received_on', 'expiry', 'sender', 'in_folders']
-    list_filter = ['outbound', 'received_on',  'in_folders']
-    list_display = ('short_id', 'inout', 'sender_field', 'sender_ident',
-        'received_on', 'folder_list', 'admin_notes', 'admin_thumbs')
-    list_per_page = 10
-    date_hierarchy = 'received_on'
-    fieldsets = (
-        ('Metadata', {
-            'fields': ('expiry', 'sender', 'in_folders', 'notes')
-        }),
-    )
-    js = (
-        '/support/js/jquery.js',
-        '/support/js/hovertip.js',
-        '/support/js/init.js'
-        )
-    save_on_top = True
-    search_fields = ['station_id', 'caller_id', 'notes']
-
-    def queryset(self, request):
-        if 'deleted' in request.GET and request.GET['deleted']:
-            parms = {'deleted__exact': True}
-        else:
-            parms = {'deleted__exact': False}
-        
-        # Post-process __isnull parts
-        new_qd = request.GET.copy()
-        for k, v in new_qd.items():
-            if k.endswith('__isnull'):
-                del new_qd[k]
-                if v == 'True' or v == '1':
-                    parms[str(k)] = True
-                else:
-                    parms[str(k)] = False
-        request.GET = new_qd
-        q = super(FaxAdmin, self).queryset(request)
-        q = q.annotate(Count('in_folders')).filter(**parms)
-        return q
-        
-    def changelist_view(self, request, extra_context=None):
-        if 'deleted' in request.GET and request.GET['deleted']:
-            if not extra_context:
-                extra_context = {}
-            extra_context.update({'deleted': True})
-        return super(FaxAdmin, self).changelist_view(request, extra_context)
-
-    def change_view(self, request, object_id, extra_content=None):
-        if not request.user.is_superuser:
-            raise PermissionDenied
-        import django.contrib.admin.views.main
-        from django.http import HttpResponse
-        r = super(FaxAdmin, self).change_view(request, object_id, extra_content)
-        if request.method == 'POST':
-            Fax.objects.get(pk=object_id).fix_folders()
-        if r.status_code == 302:
-            return HttpResponse('<script>window.opener.location.href = window.opener.location.href; window.close();</script>')
-        return r
-
 class Sender(models.Model):
+    """
+    These objects are now usable for OUTGOING fax numbers too, so we changed
+    their verbose names for clarity.
+    """
     label = models.CharField(_('name'),max_length=80, unique=True)
     class Meta:
         ordering = ('label',)
-        verbose_name = _('sender')
-        verbose_name_plural = _('senders')
+        verbose_name = _('correspondent')
+        verbose_name_plural = _('correspondents')
     
     def __str__(self):
         return self.label.encode('utf-8')
+
+class PhonebookEntry(models.Model):
+    subject = models.ForeignKey(Sender, null=False)
+    number = models.CharField(max_length=32)
     
+    def __unicode__(self):
+        return u'%s: %s' % (self.subject, self.number)
+        
+    class Meta:
+        ordering = ('subject',)
+        verbose_name = _('phonebook entry')
+        verbose_name_plural = _('phonebook entries')
+
 class SenderCID(models.Model):
     caller_id = models.CharField(_('calling number'),
         max_length=32)
@@ -459,3 +452,59 @@ class SenderStationID(models.Model):
 
     def __unicode__(self):
         return self.station_id + u' → %s' % self.sender
+
+class FolderACL(models.Model):
+    
+    READ = 1
+    REMOVE = 2
+    INSERT = 3
+    CREATE_SUBFOLDER = 4
+    
+    access_type_choices = (
+        (1, 'READ'),
+        (2, 'DELETE'),
+#        (3, 'INSERT'),
+#        (4, 'CREATE_SUBFOLDER')
+    )
+    
+    @classmethod
+    def get_access_type_string(cls, type_number):
+        return cls.access_type_choices[type_number-1][1]
+    
+    folder = models.ForeignKey(Folder, null=False)
+    group = models.ForeignKey(Group, null=True, blank=True)
+    user = models.ForeignKey(User, null=True, blank=True)
+    access = models.IntegerField(choices=access_type_choices)
+    permit = models.BooleanField()
+    
+    def clean(self):
+        """
+        Check that we have specified either a group or a user and not both
+        of them.
+        Also check the access type integer for meaningfulness.
+        """
+        from django.core.exceptions import ValidationError
+        if (not self.user and not self.group) or (self.user and self.group):
+            raise ValidationError("Exactly one of user and group must be set")
+        if self.access not in [x[0] for x in self.access_type_choices]:
+            raise ValidatonError("%s is not a valid access type" % self.access)
+        return super(FolderACL, self).clean()
+    
+    def __unicode__(self):
+        if self.permit:
+            action = 'ALLOW'
+        else:
+            action = 'DENY'
+        if self.user:
+            subject = u'user %s' % self.user
+        elif self.group:
+            subject = u'group %s' % self.group
+        else:
+            raise ValueError("Exactly one of user and group must be set")
+        return u'%s %s for %s on folder %s' % (action,
+            self.get_access_type_string(self.access), subject, self.folder)
+        
+    
+    class Meta:
+        verbose_name = "folder ACL"
+        

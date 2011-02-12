@@ -160,11 +160,12 @@ class FaxImage(object):
             
     def thumbnail_links(self, page=None):
         def full_width():
+            from django.conf import settings
             try:
-                from settings import FAX_WIDTH
-                return FAX_WIDTH
-            except ImportError:
+                return settings.FAX_WIDTH
+            except AttributeError:
                 return 800
+
         def links_for_page(pagenum):
             return {
                 'small': settings.FAX_CACHE_URL_FORMAT % (self.commid, pagenum),

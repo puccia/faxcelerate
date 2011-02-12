@@ -3,8 +3,12 @@
 
 {% block bodyclass %}faxdetails{% endblock %}
 
+{% block javascripts %}
+{% endblock %}
+
 {% block extrahead %}
 {{ block.super }}
+<link rel="stylesheet" type="text/css" href="/support/css/faxview.css" />
 <script type='text/javascript' src='/support/js/jquery.js'></script>
 <script type='text/javascript' src='/support/js/fax_detail.js'></script>
 <style>

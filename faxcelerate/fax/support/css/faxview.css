@@ -14,15 +14,11 @@ body.fax-change-list .module table .error-note {
 	color: #f11;
 }
 
-body.faxdetails #container {
-	background: #333;
+body {
+	background: #3f3f3f;
 	color: #fff;
 }
 
-
-body.faxdetails #content h1 {
-	color: #fff;
-}
 
 .faxpage img {
 	border-color: #eee;
@@ -91,12 +87,8 @@ div.faxpage {
 	margin-top: 30px;
 }
 
-.faxpage img {
-	width: 740px;
-}
-
 .faxpage {
-width: 800px;
+	width: 800px;
 }
 
 ul.rotation-tools li.rotate-left {
