@@ -20,7 +20,9 @@ TIFF_OUTPUT_DIR = os.path.join(settings.FAX_SPOOL_DIR, 'senttiff')
 if __name__ == '__main__':
     qfile, why = sys.argv[1:3]
     print qfile, why
-    if why != 'done':
+    # Exit if fax is still in queue.
+    # Continue if fax is done or aborted due to an error
+    if why in ('blocked', 'requeued'):
         sys.exit(1)
 
     # Scan qfile for info
@@ -39,7 +41,13 @@ if __name__ == '__main__':
     # Exit if job is not done
     if info['state'] != '7':
         sys.exit(1)
-   
+
+    error_message = None
+    if why != 'done':
+        try:
+            error_message = '%s: %s' % (why, info['status'])
+        except KeyError:
+            error_message = why
     print 'OK'
 
     # Build TIFF file
@@ -59,6 +67,8 @@ if __name__ == '__main__':
     fax.time_to_receive = 1
     fax.outbound = True
     fax.update_from_tiff()
+    if error_message:
+        fax.reason = error_message
     fax.save()
     from faxcelerate.fax.image import FaxImage
     FaxImage(fax).cache_thumbnails()
