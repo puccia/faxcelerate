@@ -52,6 +52,7 @@
     addFromText = function(ev) {
         var inputField = $("#destinationNumber")[0];
         addNumber(inputField.value);
+        return false;
     }
 
     function PBHandlingInit() {
