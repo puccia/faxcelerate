@@ -4,7 +4,7 @@
 
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 
 from image import FaxImage
 from faxcelerate.fax.models import Fax, SenderCID, SenderStationID
@@ -184,11 +184,15 @@ def fax_detail(request, *args, **kwargs):
     kwargs['queryset'] = Fax.objects.filter_queryset_for_user(
         kwargs['queryset'], request.user)
     return object_detail(request, *args, **kwargs)
-    
+
 def fax_send(request):
     """
     Display a web page to send a new fax, or perform the action.
     """
+    from django.contrib import admin
+    if not request.user.has_perm('fax.can_send'):
+        return admin.site.login(request)
+    
     from django import forms
     from fax.models import PhonebookEntry
     

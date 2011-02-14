@@ -223,6 +223,9 @@ class Fax(models.Model):
         ordering = ('-received_on',)
         verbose_name = _('Fax message')
         verbose_name_plural = _('Fax messages')
+        permissions = (
+            ('can_send_fax', _('Can send fax messages')),
+        )
     
     # Regular expressions for log analysis
     import re
