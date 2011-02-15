@@ -22,8 +22,8 @@
 {% endif %}
 
 <div id="faxPage">
-    <p>{% trans 'Choose a file to send as a fax' %}:</p>
-{{form}}
+    <p>{% trans 'Choose a file to send as a fax' %}:
+{% for field in form %}{{ field }}{% endfor %}</p>
 </div>
 
 <div class="notice">
@@ -39,10 +39,10 @@
 </div>
 
 <div id="addFromList">
-<p>Add from phonebook:</p>
-{{phonebook}}
+<p>{% trans 'To add a new recipient from the phonebook, double click on it' %}:</p>
+{{phonebook.phonebook}}
     </div>
-    <input type="submit" />
+<p><input type="submit" /></p>
 </form>
 {% endblock %}
 
