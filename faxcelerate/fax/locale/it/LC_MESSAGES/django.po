@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-15 00:58+0100\n"
+"POT-Creation-Date: 2011-02-15 01:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,7 +89,7 @@ msgstr "n. progressivo"
 msgid "Calling station ID"
 msgstr "ID della stazione chiamante"
 
-#: models.py:173 models.py:432 models.py:438
+#: models.py:173 models.py:433 models.py:439
 msgid "calling number"
 msgstr "numero chiamante"
 
@@ -173,6 +173,14 @@ msgstr "Eliminato"
 msgid "Default rotation"
 msgstr "Rotazione di default"
 
+#: models.py:218
+msgid "local sender"
+msgstr "mittente locale"
+
+#: models.py:220
+msgid "outbound"
+msgstr "in uscita"
+
 #: models.py:224
 msgid "Fax message"
 msgstr "Messaggio fax"
@@ -189,7 +197,7 @@ msgstr "Può inviare fax"
 msgid "Station"
 msgstr "Stazione"
 
-#: models.py:256 models.py:435 models.py:449 templates/fax/fax_tools.html:22
+#: models.py:256 models.py:436 models.py:450 templates/fax/fax_tools.html:22
 msgid "Sender"
 msgstr "Mittente"
 
@@ -201,6 +209,20 @@ msgstr "Archiviato sotto"
 msgid "Short ID"
 msgstr "N."
 
+#: models.py:268
+msgid " (deleted)"
+msgstr " (eliminato)"
+
+#: models.py:269
+#, python-format
+msgid " on %s"
+msgstr " del %s"
+
+#: models.py:270
+#, python-format
+msgid " from %s"
+msgstr " da %s"
+
 #: models.py:278
 msgid "page thumbnails"
 msgstr "miniature delle pagine"
@@ -209,35 +231,39 @@ msgstr "miniature delle pagine"
 msgid "notes"
 msgstr "Note"
 
-#: models.py:410
+#: models.py:404
+msgid "In/Out"
+msgstr ""
+
+#: models.py:411
 msgid "name"
 msgstr "nome"
 
-#: models.py:413
+#: models.py:414
 msgid "correspondent"
 msgstr "corrispondente"
 
-#: models.py:414
+#: models.py:415
 msgid "correspondents"
 msgstr "corrispondenti"
 
-#: models.py:428
+#: models.py:429
 msgid "phonebook entry"
 msgstr "voce di rubrica"
 
-#: models.py:429
+#: models.py:430
 msgid "phonebook entries"
 msgstr "voci di rubrica"
 
-#: models.py:439
+#: models.py:440
 msgid "calling numbers"
 msgstr "numeri chiamanti"
 
-#: models.py:446 models.py:452
+#: models.py:447 models.py:453
 msgid "calling station ID"
 msgstr "ID della stazione chiamante"
 
-#: models.py:453
+#: models.py:454
 msgid "calling station IDs"
 msgstr "ID delle stazioni"
 
@@ -363,15 +389,6 @@ msgstr "dal numero"
 #: templates/fax/fax_tools.html:30 templates/fax/fax_tools.html.py:32
 msgid "Learn"
 msgstr "Impara"
-
-#~ msgid " (deleted)"
-#~ msgstr " (eliminato)"
-
-#~ msgid " on %s"
-#~ msgstr " del %s"
-
-#~ msgid " from %s"
-#~ msgstr " da %s"
 
 #~ msgid "senders"
 #~ msgstr "mittenti"

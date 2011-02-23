@@ -4,7 +4,7 @@ import os
 from django.db import models
 from django.template.loader import render_to_string
 from django.core.cache import cache
-from django.utils.translation import gettext_lazy as _, gettext as __
+from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.shortcuts import render_to_response
 from django import template
 
@@ -215,9 +215,9 @@ class Fax(models.Model):
         null=False,default=False)
     _rotation = models.CharField(_('Default rotation'),
         db_column='rotation', null=True, blank=True, max_length=200)
-    localsender = models.CharField('local sender', max_length=120, null=True,
+    localsender = models.CharField(_('local sender'), max_length=120, null=True,
         blank=True)
-    outbound = models.BooleanField('outbound', default=False)
+    outbound = models.BooleanField(_('outbound'), default=False)
 
     class Meta:
         ordering = ('-received_on',)
@@ -401,7 +401,8 @@ class Fax(models.Model):
             return 'Out'
         else:
             return 'In'
-
+    inout.short_description = _('In/Out')
+    
 class Sender(models.Model):
     """
     These objects are now usable for OUTGOING fax numbers too, so we changed
