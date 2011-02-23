@@ -83,7 +83,7 @@ class Folder(models.Model):
     def cache_label(self):
         return 'folder__full_label__%s' % self.id
     
-    def __str__(self):
+    def __unicode__(self):
         "Pull the name from the cache, or compute it if needed."
         def full_name():
             "Build the name out of the full path to the folder."
@@ -94,7 +94,7 @@ class Folder(models.Model):
                 p = p.parent
             cache.set(self.cache_label(), l)
             return l
-        return cache.lazy_get(self.cache_label(), full_name).encode('utf-8')
+        return cache.lazy_get(self.cache_label(), full_name)
         
     def ancestors(self):
         "List the node and all the objects tracing back to the root."
@@ -263,13 +263,13 @@ class Fax(models.Model):
         return self.comm_id.lstrip('0')
     short_id.short_description = _('Short ID')
         
-    def __str__(self):
+    def __unicode__(self):
         n = 'Fax ' + self.short_id()
         if self.deleted: n += __(' (deleted)')
         if self.received_on: n += __(' on %s') % self.received_on
         if self.sender: n += __(' from %s') % self.sender
         return n
-    
+
     def admin_thumbs(self):
         return render_to_string('fax/thumb.html',
             {'images': image.FaxImage(self).thumbnail_links(),
@@ -417,6 +417,9 @@ class Sender(models.Model):
     def __str__(self):
         return self.label.encode('utf-8')
 
+    def __unicode__(self):
+        return self.label
+
 class PhonebookEntry(models.Model):
     subject = models.ForeignKey(Sender, null=False)
     number = models.CharField(max_length=32)
@@ -439,8 +442,8 @@ class SenderCID(models.Model):
         verbose_name = _('calling number')
         verbose_name_plural = _('calling numbers')
     
-    def __str__(self):
-        return self.caller_id + ' → %s' % self.sender
+    def __unicode__(self):
+        return self.caller_id + u' → %s' % self.sender
     
     
 class SenderStationID(models.Model):
