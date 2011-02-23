@@ -24,7 +24,7 @@ class FaxAdmin(admin.ModelAdmin):
     search_fields = ['station_id', 'caller_id', 'notes']
 
     def lookup_allowed(self, key):
-        lookups = ['in_folders']
+        lookups = ['in_folders', 'deleted']
         for l in lookups:
             if key.startswith(l):
                 return True
@@ -45,6 +45,8 @@ class FaxAdmin(admin.ModelAdmin):
                     parms[str(k)] = True
                 else:
                     parms[str(k)] = False
+        for k in parms:
+            new_qd[k] = parms[k]
         request.GET = new_qd
         base_qs = super(FaxAdmin, self).queryset(request)
         return Fax.objects.filter_queryset_for_user(base_qs, request.user)
