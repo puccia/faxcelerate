@@ -97,6 +97,8 @@ if DEBUG:
 		'django_extensions',
 	)
 
+GRAPPELLI_ADMIN_TITLE = 'Faxcelerate'
+
 try:
     from faxcelerate.local_settings import *
 except ImportError:
