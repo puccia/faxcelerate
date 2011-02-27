@@ -11,7 +11,7 @@
 {% endblock %}
 {% block bodyclass %}{{ block.super }} fax-change-list{% endblock %}
 {% block object-tools %}
-    <ul class="object-tools tools">
+    <ul id="tools" class="object-tools tools">
         <li>
             {% if deleted %}
             <a href="?" class="viewsitelink">{% trans 'Show not deleted' %}</a>
