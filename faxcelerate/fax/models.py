@@ -476,7 +476,10 @@ class FolderACL(models.Model):
     
     @classmethod
     def get_access_type_string(cls, type_number):
-        return cls.access_type_choices[type_number-1][1]
+        try:
+            return cls.access_type_choices[type_number-1][1]
+        except IndexError:
+            return _('unknown access type')
     
     folder = models.ForeignKey(Folder, null=False)
     group = models.ForeignKey(Group, null=True, blank=True)
