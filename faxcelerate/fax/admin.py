@@ -101,6 +101,5 @@ admin.site.register(SenderCID)
 admin.site.register(SenderStationID)
 admin.site.register(FolderACL)
 admin.site.register(PhonebookEntry, PhonebookAdmin)
-from django.contrib.auth import admin as auth_admin
-#admin.site.register(auth_admin.User, auth_admin.UserAdmin)
 
+from django.contrib.auth import admin

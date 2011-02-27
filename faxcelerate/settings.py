@@ -103,6 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
+    'grappelli.dashboard',
     'faxcelerate.fax',
     'south',
     'grappelli',
@@ -119,6 +120,7 @@ if DEBUG:
 		'django_extensions',
 	)
 
+GRAPPELLI_INDEX_DASHBOARD = 'faxcelerate.dashboard.CustomIndexDashboard'
 GRAPPELLI_ADMIN_TITLE = 'Faxcelerate'
 
 try:

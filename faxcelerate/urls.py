@@ -23,9 +23,9 @@ __contact__			= "faxcelerate@corp.it"
 from django.conf.urls.defaults import *
 
 from django.contrib import admin
+from fax import admin as fax_admin
 from faxcelerate.settings import ADMIN_MEDIA_PREFIX
 import faxcelerate.fax
-import faxcelerate.fax.admin
 import faxcelerate.settings as fax_settings
 import os.path
 
