@@ -19,7 +19,9 @@ __organization__	= "C.O.R.P. s.n.c"
 __copyright__		= "Copyright 2007-2011, C.O.R.P. s.n.c"
 __license__ 		= "GNU Affero GPL v. 3.0"
 __contact__			= "faxcelerate@corp.it"
+
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 from faxcelerate.fax.models import *
 
 from django.core.exceptions import PermissionDenied
@@ -93,6 +95,15 @@ class FaxAdmin(admin.ModelAdmin):
 
 class PhonebookAdmin(admin.ModelAdmin):
     list_display = ('subject', 'number')
+
+class FaxcelerateAdminSite(admin.AdminSite):
+    def index(self, request, extra_context=None):
+        if not extra_context:
+            extra_context = {}
+        extra_context.update({'title': _('Main dashboard')})
+        return super(FaxcelerateAdminSite, self).index(request, extra_context)
+
+admin.site = FaxcelerateAdminSite()
 
 admin.site.register(Folder)
 admin.site.register(Fax, FaxAdmin)
