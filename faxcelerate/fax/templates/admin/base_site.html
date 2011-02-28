@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% load i18n grp_tags %}
+
+{% block title %}{{ title }} | {% trans 'Faxcelerate' %}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">{% trans 'Faxcelerate' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}
+<br clear="both"/><div id="footer" style="text-align:center; font-size: 80%;">
+<a href="http://faxcelerate.com/">Faxcelerate</a> is licensed under the Affero GPL License, v. 3.0.<br/>
+© 2007-2011 C.O.R.P. s.n.c. - <a href="http://github.com/puccia/faxcelerate/wiki/Credits">Credits</a>
+{% if footer_branding %}{{ footer_branding }}<br/>{% endif %}
+</div>
+{% endblock %}
