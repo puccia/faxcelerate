@@ -217,7 +217,16 @@ def fax_send(request):
     
     from django import forms
     from fax.models import PhonebookEntry
-    
+
+    def make_context(pbform, sfform, context={}):
+        context.update({
+            'form': sfform,
+            'phonebook': pbform,
+            'adminform': {'model_admin': None},
+            'user': request.user
+        })
+        return context
+
     class SendFaxForm(forms.Form):
         file = forms.FileField()
         numberlist = forms.CharField(required=False, widget=forms.HiddenInput)
@@ -230,8 +239,8 @@ def fax_send(request):
     server_response = None
     if request.method == 'GET':
         form = SendFaxForm()
-        return render_to_response('fax/fax_send.html', {'form': form,
-            'phonebook': pbform, 'adminform': {'model_admin': None}})
+        context = make_context(pbform, form)
+        return render_to_response('fax/fax_send.html', context)
     elif request.method == 'POST':
         form = SendFaxForm(request.POST, request.FILES)
         if form.is_valid():
@@ -247,9 +256,8 @@ def fax_send(request):
             # We have a single file
             out, err = sendfax.communicate(request.FILES['file'].read())
             server_response = '\n'.join([out, err])
-        return render_to_response('fax/fax_send.html', {'form': form,
-            'phonebook': pbform, 'adminform': {'model_admin': None},
-            'server_response': server_response})
+        return render_to_response('fax/fax_send.html', make_context(
+                pbform, sfform, context={'server_response': server_response}))
         # Remove when done
         raise Exception('Not yet implemented')
 
