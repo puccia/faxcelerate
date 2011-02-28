@@ -120,7 +120,7 @@ if DEBUG:
 		'django_extensions',
 	)
 
-GRAPPELLI_INDEX_DASHBOARD = 'faxcelerate.dashboard.CustomIndexDashboard'
+GRAPPELLI_INDEX_DASHBOARD = 'faxcelerate.fax.dashboard.CustomIndexDashboard'
 GRAPPELLI_ADMIN_TITLE = 'Faxcelerate'
 
 try:
