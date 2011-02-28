@@ -491,8 +491,8 @@ class FolderACL(models.Model):
     CREATE_SUBFOLDER = 4
     
     access_type_choices = (
-        (1, 'READ'),
-        (2, 'DELETE'),
+        (1, _('READ')),
+        (2, _('DELETE')),
 #        (3, 'INSERT'),
 #        (4, 'CREATE_SUBFOLDER')
     )
@@ -504,11 +504,15 @@ class FolderACL(models.Model):
         except IndexError:
             return _('unknown access type')
     
-    folder = models.ForeignKey(Folder, null=False)
-    group = models.ForeignKey(Group, null=True, blank=True)
-    user = models.ForeignKey(User, null=True, blank=True)
-    access = models.IntegerField(choices=access_type_choices)
-    permit = models.BooleanField()
+    folder = models.ForeignKey(Folder, verbose_name=_('folder'), null=False,
+        help_text=_('Folder to which this rule is applied'))
+    group = models.ForeignKey(Group, verbose_name=_('group'), null=True, blank=True)
+    user = models.ForeignKey(User, verbose_name=_('user'), null=True, blank=True)
+    access = models.IntegerField(choices=access_type_choices, verbose_name=_('access'),
+        help_text=_('Type of access that is allowed or denied'))
+    permit = models.BooleanField(verbose_name=_('allow'), help_text=_(
+        'Check if this access is allowed, or leave unchecked if it is denied'
+    ))
     
     def clean(self):
         """
@@ -525,19 +529,25 @@ class FolderACL(models.Model):
     
     def __unicode__(self):
         if self.permit:
-            action = 'ALLOW'
+            action = _('ALLOW')
         else:
-            action = 'DENY'
+            action = _('DENY')
         if self.user:
-            subject = u'user %s' % self.user
+            subject = _(u'user %s') % self.user
         elif self.group:
-            subject = u'group %s' % self.group
+            subject = _(u'group %s') % self.group
         else:
             raise ValueError("Exactly one of user and group must be set")
-        return u'%s %s for %s on folder %s' % (action,
-            self.get_access_type_string(self.access), subject, self.folder)
+        return _(u'%(action)s %(access)s for %(subject)s on folder %(folder)s'
+            ) % {
+                'action': action,
+               'access': self.get_access_type_string(self.access),
+               'subject': subject,
+               'folder': self.folder
+            }
         
     
     class Meta:
-        verbose_name = "folder ACL"
+        verbose_name = _("folder ACL")
+        verbose_name_plural = _("folder ACLs")
         

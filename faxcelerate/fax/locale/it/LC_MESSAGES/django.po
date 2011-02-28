@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Faxcelerate 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-28 08:50+0100\n"
+"POT-Creation-Date: 2011-03-01 00:31+0100\n"
 "PO-Revision-Date: 2011-02-27 22:31+0100\n"
 "Last-Translator: Emanuele Pucciarelli <ep@corp.it>\n"
 "Language: it\n"
@@ -108,7 +108,7 @@ msgstr ""
 "Il genitore di questa cartella nella gerarchia. Questa cartella si vedrà "
 "come 'sotto' o 'all'interno' del genitore."
 
-#: models.py:103
+#: models.py:103 models.py:507
 msgid "folder"
 msgstr "cartella"
 
@@ -302,9 +302,77 @@ msgstr "ID della stazione chiamante"
 msgid "calling station IDs"
 msgstr "ID delle stazioni"
 
+#: models.py:494
+msgid "READ"
+msgstr "LETTURA"
+
+#: models.py:495
+msgid "DELETE"
+msgstr "CANCELLAZIONE"
+
 #: models.py:505
 msgid "unknown access type"
 msgstr "tipo di accesso sconosciuto"
+
+#: models.py:508
+msgid "Folder to which this rule is applied"
+msgstr "Cartella a cui applicare questa regola"
+
+#: models.py:509
+msgid "group"
+msgstr "gruppo"
+
+#: models.py:510
+msgid "user"
+msgstr "utente"
+
+#: models.py:511
+msgid "access"
+msgstr "accesso"
+
+#: models.py:512
+msgid "Type of access that is allowed or denied"
+msgstr "Tipo di accesso da permettere o negare"
+
+#: models.py:513
+msgid "allow"
+msgstr "permetti"
+
+#: models.py:514
+msgid "Check if this access is allowed, or leave unchecked if it is denied"
+msgstr ""
+"Vistare se questo accesso è permesso, o lasciare non vistato se è negato"
+
+#: models.py:532
+msgid "ALLOW"
+msgstr "PERMETTI"
+
+#: models.py:534
+msgid "DENY"
+msgstr "NEGA"
+
+#: models.py:536
+#, python-format
+msgid "user %s"
+msgstr "utente %s"
+
+#: models.py:538
+#, python-format
+msgid "group %s"
+msgstr "gruppo %s"
+
+#: models.py:541
+#, python-format
+msgid "%(action)s %(access)s for %(subject)s on folder %(folder)s"
+msgstr "%(action)s %(access)s per %(subject)s sulla cartella %(folder)s"
+
+#: models.py:551
+msgid "folder ACL"
+msgstr "lista controllo accessi delle cartelle"
+
+#: models.py:552
+msgid "folder ACLs"
+msgstr "liste controllo accessi delle cartelle"
 
 #: views.py:124
 msgid "The calling number"
@@ -332,16 +400,11 @@ msgstr "Il fax è stato messo in coda per la stampa."
 msgid "is released under the"
 msgstr "è rilasciato sotto la"
 
-#: templates/admin/fax/fax/change_form.html:3 templates/fax/fax_detail.html:22
-#: templates/fax/fax_send.html:10
-msgid "Gestione archivio telefax"
-msgstr "Gestione archivio telefax"
-
-#: templates/admin/fax/fax/change_form.html:6
+#: templates/admin/fax/fax/change_form.html:5
 msgid "Info on this fax message"
 msgstr "Informazioni su questo messaggio fax"
 
-#: templates/admin/fax/fax/change_form.html:12
+#: templates/admin/fax/fax/change_form.html:11
 msgid "Pages"
 msgstr "Pagine"
 
@@ -356,6 +419,10 @@ msgstr "Mostra eliminati"
 #: templates/fax/fax_detail.html:49 templates/fax/fax_send.html:52
 msgid "Home page"
 msgstr "Pagina iniziale"
+
+#: templates/fax/fax_send.html:10
+msgid "Gestione archivio telefax"
+msgstr "Gestione archivio telefax"
 
 #: templates/fax/fax_send.html:24
 msgid "Choose a file to send as a fax"
