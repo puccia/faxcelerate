@@ -288,9 +288,9 @@ class Fax(models.Model):
         
     def __unicode__(self):
         n = 'Fax ' + self.short_id()
-        if self.deleted: n += __(' (deleted)')
-        if self.received_on: n += __(' on %s') % self.received_on
-        if self.sender: n += __(' from %s') % self.sender
+        if self.deleted: n += _(' (deleted)')
+        if self.received_on: n += _(' on %s') % self.received_on
+        if self.sender: n += _(' from %s') % self.sender
         return n
 
     def admin_thumbs(self):
