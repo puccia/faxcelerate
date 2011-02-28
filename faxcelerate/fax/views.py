@@ -223,9 +223,9 @@ def fax_send(request):
             'form': sfform,
             'phonebook': pbform,
             'adminform': {'model_admin': None},
-            'user': request.user
         })
-        return context
+        from django.template import RequestContext
+        return RequestContext(request, context)
 
     class SendFaxForm(forms.Form):
         file = forms.FileField()

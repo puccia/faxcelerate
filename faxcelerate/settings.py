@@ -97,7 +97,7 @@ TEMPLATE_DIRS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # required by django.contrib.admin anyway
-    "django.core.context_processors.auth",
+    "django.contrib.auth.context_processors.auth",
     # required by grappelli
     "django.core.context_processors.request",
 )
