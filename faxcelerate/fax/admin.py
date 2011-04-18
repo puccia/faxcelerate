@@ -46,12 +46,12 @@ class FaxAdmin(admin.ModelAdmin):
     save_on_top = True
     search_fields = ['station_id', 'caller_id', 'notes']
 
-    def lookup_allowed(self, key):
+    def lookup_allowed(self, key, value):
         lookups = ['in_folders', 'deleted']
         for l in lookups:
             if key.startswith(l):
                 return True
-        return super(FaxAdmin, self).lookup_allowed(key)
+        return super(FaxAdmin, self).lookup_allowed(key, value)
 
     def queryset(self, request):
         if 'deleted' in request.GET and request.GET['deleted']:
