@@ -72,9 +72,14 @@ if __name__ == '__main__':
             error_message = why
     print 'OK'
 
+    # List files
+    input_files = []
+    for tag in ('postscript', 'pdf', '!postscript', '!pdf'):
+        if tag in info:
+            input_files += [os.path.join(settings.FAX_SPOOL_DIR, 
+                name.split(':')[-1]) for name in info[tag]]
+
     # Build TIFF file
-    input_files = [os.path.join(settings.FAX_SPOOL_DIR, name.split(':')[-1])
-        for name in info['!postscript']]
     output_file = '%s.tif' % os.path.join(TIFF_OUTPUT_DIR, info['commid'])
     os.system('gs -dBATCH -dNOPAUSE -q -sDEVICE=tiffg3 -sOutputFile=%s %s -r200'
         % (output_file, ' '.join(input_files)))
