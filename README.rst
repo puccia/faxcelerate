@@ -83,9 +83,10 @@ In this example we'll use the following paths:
 		createuser -d -R -S -P faxcelerate
 		createdb -O faxcelerate faxcelerate
 		exit
-		
+
+
 #.	Edit the ``local_settings.py`` file in the project directory to suit 
-your configuration::
+	your configuration::
 
 		cd faxcelerate
 		
