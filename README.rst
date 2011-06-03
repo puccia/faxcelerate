@@ -27,9 +27,18 @@ Installation
 ============
 
 Beside a working installation of Hylafax, you will need:
-- Python 2.5 or later
+- Python 2.5 or later with virtualenv.
+- The Git version control software
 - a web server that supports WSGI (here Apache is shown as an example, 
 but you can choose your favourite one).
+- A database server, like PostgreSQL
+- The Django web framework
+-
+
+In this case, on a Debian/Ubuntu system, you would run::
+
+	apt-get install python-virtualenv git libapache2-mod-wsgi 
+	postgresql libpq-dev libjpeg-dev python-dev gettext
 
 Some knowledge of the Django web framework is very helpful. 
 
@@ -53,20 +62,48 @@ In this example we'll use the following paths:
 	
 	(pip will complain about the lack of a ``setup.py`` file; this will be provided in a future release.)
 
-#.	Now the code will be in /var/spool/faxcelerate-env/src/faxcelerate; you will thus find:
+	Now the code will be in 
+	``/var/spool/faxcelerate-env/src/faxcelerate;`` you will thus find:
 
 	-	the Django project ``faxcelerate`` rooted at 
-		``/var/local/faxcelerate-env/src/faxcelerate``
+		``/var/local/faxcelerate-env/src/faxcelerate/faxcelerate``
 
 	-	the Django application ``fax`` rooted at 
-		``/var/local/faxcelerate-env/src/faxcelerate/fax``.
+		``/var/local/faxcelerate-env/src/faxcelerate/faxcelerate/fax``.
 
-	Edit the ``local_settings.py`` file in the project directory to suit your configuration, then execute::
+#.	Install the Python prerequisites::
+
+		cd /var/local/faxcelerate-env/src/faxcelerate
+		pip install -r requirements.txt
+
+#.	Create a database, if you are not using sqlite. For exampe, if you
+	are using PostgreSQL::
+	
+		su postgres
+		createuser -d -R -S -P faxcelerate
+		createdb -O faxcelerate faxcelerate
+		exit
+		
+#.	Edit the ``local_settings.py`` file in the project directory to suit 
+your configuration::
+
+		cd faxcelerate
+		
+#.	Now execute::
 
 		python manage.py syncdb
 	
 	to create and initialise the database. You will be asked for the 
 	superuser's username and password.
+
+#.	Execute::
+
+		python manage.py migrate
+
+#.	Compile the localized message files::
+
+		cd fax
+		python ../manage.py compilemessages
 
 #.	Configure your web server to run the Django project. If you are 
 	using Apache, you can use the supplied ``apache/faxcelerate.conf``
