@@ -257,7 +257,7 @@ def fax_send(request):
             out, err = sendfax.communicate(request.FILES['file'].read())
             server_response = '\n'.join([out, err])
         return render_to_response('fax/fax_send.html', make_context(
-                pbform, sfform, context={'server_response': server_response}))
+                pbform, form, context={'server_response': server_response}))
         # Remove when done
         raise Exception('Not yet implemented')
 
