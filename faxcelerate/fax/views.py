@@ -186,6 +186,13 @@ def print_fax(request, commid=None, printer=None):
     request.user.message_set.create(message=_('The fax was queued for printing.'))
     return HttpResponseRedirect(reverse('fax-view', args=(commid,)))
 
+def cache(request, commid=None, pageno=None):
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
+    from faxcelerate import settings
+    cached_page_filename = settings.FAX_CACHE_NAME_FORMAT % (commid, pageno)
+    f = file(cached_page_filename, 'r')
+    return HttpResponse(f.read(), mimetype='image/png')
+
 def rotate(request):
     commid = request.REQUEST['commid']
     page = int(request.REQUEST['page'])
