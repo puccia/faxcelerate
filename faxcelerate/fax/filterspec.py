@@ -46,8 +46,8 @@ class FolderFilterSpec(RelatedFilterSpec):
                    and self.lookup_val3 is None,
                'query_string': cl.get_query_string({}, [self.lookup_kwarg, self.lookup_kwarg2, self.lookup_kwarg3]),
                'display': _('All')}
-        yield {'selected': self.lookup_val3 == 'True',
-               'query_string': cl.get_query_string({self.lookup_kwarg3: 'True'}, [self.lookup_kwarg, self.lookup_kwarg2]),
+        yield {'selected': self.lookup_val3 == 'true',
+               'query_string': cl.get_query_string({self.lookup_kwarg3: 'true'}, [self.lookup_kwarg, self.lookup_kwarg2]),
                'display': _('Unfiled'),
               }
         m = [c for c in self.lookup_choices]
@@ -56,7 +56,6 @@ class FolderFilterSpec(RelatedFilterSpec):
                return -1
             else:
                 return 1
-        #m.sort(foldersort)
         m.sort()
         for val in m:
             val = self.field.rel.to.objects.get(pk=val[0])

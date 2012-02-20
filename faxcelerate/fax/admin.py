@@ -53,27 +53,6 @@ class FaxAdmin(admin.ModelAdmin):
                 return True
         return super(FaxAdmin, self).lookup_allowed(key, value)
 
-    def queryset(self, request):
-        if 'deleted' in request.GET and request.GET['deleted']:
-            parms = {'deleted__exact': True}
-        else:
-            parms = {'deleted__exact': False}
-        
-        # Post-process __isnull parts
-        new_qd = request.GET.copy()
-        for k, v in new_qd.items():
-            if k.endswith('__isnull'):
-                del new_qd[k]
-                if v == 'True' or v == '1':
-                    parms[str(k)] = True
-                else:
-                    parms[str(k)] = False
-        for k in parms:
-            new_qd[k] = parms[k]
-        request.GET = new_qd
-        base_qs = super(FaxAdmin, self).queryset(request)
-        return Fax.objects.filter_queryset_for_user(base_qs, request.user)
-    
     def changelist_view(self, request, extra_context=None):
         if 'deleted' in request.GET and request.GET['deleted']:
             if not extra_context:
