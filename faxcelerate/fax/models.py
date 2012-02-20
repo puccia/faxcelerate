@@ -178,6 +178,8 @@ class FaxManager(models.Manager):
         visible = Folder.objects.visible_to_user(user)
         for folder in visible:
             Q_object = (Q_object | Q(in_folders=folder))
+        if len(Q_object) == 0:
+            return queryset.none()
         return queryset.filter(Q_object).distinct()
         
     def visible_to_user(self, user):
