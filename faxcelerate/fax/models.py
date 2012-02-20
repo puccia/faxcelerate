@@ -96,6 +96,7 @@ class Folder(models.Model):
         super(Folder, self).save(*args, **kwargs)
         for d in self.descendants():
             cache.delete(d.cache_label())
+        cache.delete(self.cache_label())
         Folder.fix_sorting()
         
     class Meta:
