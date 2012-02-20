@@ -18,13 +18,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Faxcelerate 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-01 00:31+0100\n"
+"POT-Creation-Date: 2012-02-20 14:21+0100\n"
 "PO-Revision-Date: 2011-02-27 22:31+0100\n"
 "Last-Translator: Emanuele Pucciarelli <ep@corp.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 
 #: admin.py:103
 msgid "Main dashboard"
@@ -42,9 +42,8 @@ msgstr "Gestione utenti"
 msgid "Fax operations"
 msgstr "Operazioni sui fax"
 
-#: dashboard.py:59 templates/admin/faxcelerate_index.html:6
-#: templates/admin/fax/fax/change_list.html:23 templates/fax/fax_send.html:10
-#: templates/fax/fax_send.html.py:54
+#: dashboard.py:59 templates/admin/fax/fax/change_list.html:23
+#: templates/fax/fax_send.html:10 templates/fax/fax_send.html.py:56
 msgid "Send a fax"
 msgstr "Invia un fax"
 
@@ -108,55 +107,55 @@ msgstr ""
 "Il genitore di questa cartella nella gerarchia. Questa cartella si vedrà "
 "come 'sotto' o 'all'interno' del genitore."
 
-#: models.py:103 models.py:507
+#: models.py:104 models.py:508
 msgid "folder"
 msgstr "cartella"
 
-#: models.py:104
+#: models.py:105
 msgid "folders"
 msgstr "cartelle"
 
-#: models.py:192
+#: models.py:193
 msgid "progressive ID"
 msgstr "n. progressivo"
 
-#: models.py:194
+#: models.py:195
 msgid "Calling station ID"
 msgstr "ID della stazione chiamante"
 
-#: models.py:196 models.py:459 models.py:465
+#: models.py:197 models.py:460 models.py:466
 msgid "calling number"
 msgstr "numero chiamante"
 
-#: models.py:198
+#: models.py:199
 msgid "called number"
 msgstr "numero chiamato"
 
-#: models.py:200
+#: models.py:201
 msgid "TIFF file name"
 msgstr "Nome del file TIFF"
 
-#: models.py:202
+#: models.py:203
 msgid "date"
 msgstr "data"
 
-#: models.py:204
+#: models.py:205
 msgid "time to receive"
 msgstr "durata ricezione"
 
-#: models.py:206
+#: models.py:207
 msgid "total connection time"
 msgstr "tempo totale di collegamento"
 
-#: models.py:208
+#: models.py:209
 msgid "pages"
 msgstr "pagine"
 
-#: models.py:211
+#: models.py:212
 msgid "expiration date"
 msgstr "scadenza"
 
-#: models.py:213
+#: models.py:214
 msgid ""
 "An expiry date after which the message will no longer be useful. You can set "
 "this for time-limited promotions you do not want to display after their "
@@ -166,11 +165,11 @@ msgstr ""
 "impostare per promozioni limitate nel tempo che non si vogliono mostrare "
 "dopo la loro validità, o si può lasciare vuota."
 
-#: models.py:220
+#: models.py:221
 msgid "filed in folders"
 msgstr "archiviato sotto"
 
-#: models.py:222
+#: models.py:223
 msgid ""
 "A list of folders under which this message will be found.  You can specify "
 "one or more folders, so that the message will be visible under each of them."
@@ -179,11 +178,11 @@ msgstr ""
 "specificare una o più cartelle, in modo che il messaggio sia visibile sotto "
 "ciascuna."
 
-#: models.py:228
+#: models.py:229
 msgid "sender"
 msgstr "mittente"
 
-#: models.py:230
+#: models.py:231
 msgid ""
 "The sender of this fax message. Set this to have it displayed alongside the "
 "message, and to enable automatic identification in the future."
@@ -192,185 +191,185 @@ msgstr ""
 "a fianco del messaggio, e per abilitare il riconoscimento automatico nel "
 "futuro."
 
-#: models.py:234
+#: models.py:235
 msgid "error reason"
 msgstr "motivo dell'errore"
 
-#: models.py:236
+#: models.py:237
 msgid "Notes"
 msgstr "Note"
 
-#: models.py:237
+#: models.py:238
 msgid "Deleted"
 msgstr "Eliminato"
 
-#: models.py:239
+#: models.py:240
 msgid "Default rotation"
 msgstr "Rotazione di default"
 
-#: models.py:241
+#: models.py:242
 msgid "local sender"
 msgstr "mittente locale"
 
-#: models.py:243
+#: models.py:244
 msgid "outbound"
 msgstr "in uscita"
 
-#: models.py:247
+#: models.py:248
 msgid "Fax message"
 msgstr "Messaggio fax"
 
-#: models.py:248
+#: models.py:249
 msgid "Fax messages"
 msgstr "Messaggi fax"
 
-#: models.py:250
+#: models.py:251
 msgid "Can send fax messages"
 msgstr "Può inviare fax"
 
-#: models.py:273
+#: models.py:274
 msgid "Station"
 msgstr "Stazione"
 
-#: models.py:279 models.py:462 models.py:476 templates/fax/fax_tools.html:22
+#: models.py:280 models.py:463 models.py:477 templates/fax/fax_tools.html:22
 msgid "Sender"
 msgstr "Mittente"
 
-#: models.py:283 templates/fax/fax_tools.html:23
+#: models.py:284 templates/fax/fax_tools.html:23
 msgid "Filed under"
 msgstr "Archiviato sotto"
 
-#: models.py:287
+#: models.py:288
 msgid "Short ID"
 msgstr "N."
 
-#: models.py:291
+#: models.py:292
 msgid " (deleted)"
 msgstr " (eliminato)"
 
-#: models.py:292
+#: models.py:293
 #, python-format
 msgid " on %s"
 msgstr " del %s"
 
-#: models.py:293
+#: models.py:294
 #, python-format
 msgid " from %s"
 msgstr " da %s"
 
-#: models.py:301
+#: models.py:302
 msgid "page thumbnails"
 msgstr "miniature delle pagine"
 
-#: models.py:314
+#: models.py:315
 msgid "notes"
 msgstr "Note"
 
-#: models.py:427
+#: models.py:428
 msgid "In/Out"
 msgstr "Entrante/Uscente"
 
-#: models.py:434
+#: models.py:435
 msgid "name"
 msgstr "nome"
 
-#: models.py:437
+#: models.py:438
 msgid "correspondent"
 msgstr "corrispondente"
 
-#: models.py:438
+#: models.py:439
 msgid "correspondents"
 msgstr "corrispondenti"
 
-#: models.py:455
+#: models.py:456
 msgid "phonebook entry"
 msgstr "voce di rubrica"
 
-#: models.py:456
+#: models.py:457
 msgid "phonebook entries"
 msgstr "voci di rubrica"
 
-#: models.py:466
+#: models.py:467
 msgid "calling numbers"
 msgstr "numeri chiamanti"
 
-#: models.py:473 models.py:479
+#: models.py:474 models.py:480
 msgid "calling station ID"
 msgstr "ID della stazione chiamante"
 
-#: models.py:480
+#: models.py:481
 msgid "calling station IDs"
 msgstr "ID delle stazioni"
 
-#: models.py:494
+#: models.py:495
 msgid "READ"
 msgstr "LETTURA"
 
-#: models.py:495
+#: models.py:496
 msgid "DELETE"
 msgstr "CANCELLAZIONE"
 
-#: models.py:505
+#: models.py:506
 msgid "unknown access type"
 msgstr "tipo di accesso sconosciuto"
 
-#: models.py:508
+#: models.py:509
 msgid "Folder to which this rule is applied"
 msgstr "Cartella a cui applicare questa regola"
 
-#: models.py:509
+#: models.py:510
 msgid "group"
 msgstr "gruppo"
 
-#: models.py:510
+#: models.py:511
 msgid "user"
 msgstr "utente"
 
-#: models.py:511
+#: models.py:512
 msgid "access"
 msgstr "accesso"
 
-#: models.py:512
+#: models.py:513
 msgid "Type of access that is allowed or denied"
 msgstr "Tipo di accesso da permettere o negare"
 
-#: models.py:513
+#: models.py:514
 msgid "allow"
 msgstr "permetti"
 
-#: models.py:514
+#: models.py:515
 msgid "Check if this access is allowed, or leave unchecked if it is denied"
 msgstr ""
 "Vistare se questo accesso è permesso, o lasciare non vistato se è negato"
 
-#: models.py:532
+#: models.py:533
 msgid "ALLOW"
 msgstr "PERMETTI"
 
-#: models.py:534
+#: models.py:535
 msgid "DENY"
 msgstr "NEGA"
 
-#: models.py:536
+#: models.py:537
 #, python-format
 msgid "user %s"
 msgstr "utente %s"
 
-#: models.py:538
+#: models.py:539
 #, python-format
 msgid "group %s"
 msgstr "gruppo %s"
 
-#: models.py:541
+#: models.py:542
 #, python-format
 msgid "%(action)s %(access)s for %(subject)s on folder %(folder)s"
 msgstr "%(action)s %(access)s per %(subject)s sulla cartella %(folder)s"
 
-#: models.py:551
+#: models.py:552
 msgid "folder ACL"
 msgstr "lista controllo accessi delle cartelle"
 
-#: models.py:552
+#: models.py:553
 msgid "folder ACLs"
 msgstr "liste controllo accessi delle cartelle"
 
@@ -416,7 +415,7 @@ msgstr "Mostra non eliminati"
 msgid "Show deleted"
 msgstr "Mostra eliminati"
 
-#: templates/fax/fax_detail.html:49 templates/fax/fax_send.html:52
+#: templates/fax/fax_detail.html:49 templates/fax/fax_send.html:54
 msgid "Home page"
 msgstr "Pagina iniziale"
 
@@ -428,19 +427,23 @@ msgstr "Gestione archivio telefax"
 msgid "Choose a file to send as a fax"
 msgstr "Scegli un file da inviare come fax"
 
-#: templates/fax/fax_send.html:29
+#: templates/fax/fax_send.html:26
+msgid "Supported file types"
+msgstr "Tipi di file accettati"
+
+#: templates/fax/fax_send.html:31
 msgid "There are"
 msgstr "Ci sono"
 
-#: templates/fax/fax_send.html:30
+#: templates/fax/fax_send.html:32
 msgid "recipients"
 msgstr "destinatari"
 
-#: templates/fax/fax_send.html:36
+#: templates/fax/fax_send.html:38
 msgid "Add a new recipient"
 msgstr "Aggiungi un nuovo destinatario"
 
-#: templates/fax/fax_send.html:41
+#: templates/fax/fax_send.html:43
 msgid "To add a new recipient from the phonebook, double click on it"
 msgstr "Per aggiungere un nuovo destinatario dalla rubrica, fare doppio click"
 
