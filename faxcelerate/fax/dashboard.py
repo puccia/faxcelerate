@@ -1,4 +1,4 @@
-# Copyright 2007-2011 C.O.R.P. s.n.c.
+# Copyright 2007-2012 C.O.R.P. s.n.c.
 #
 # This file is part of Faxcelerate.
 # Faxcelerate is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 __author__			= "Emanuele Pucciarelli"
 __organization__	= "C.O.R.P. s.n.c"
-__copyright__		= "Copyright 2007-2011, C.O.R.P. s.n.c"
+__copyright__		= "Copyright 2007-2012, C.O.R.P. s.n.c"
 __license__ 		= "GNU Affero GPL v. 3.0"
 __contact__			= "faxcelerate@corp.it"
 
