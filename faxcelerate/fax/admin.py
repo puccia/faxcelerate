@@ -29,7 +29,7 @@ from django.core.exceptions import PermissionDenied
 class FaxAdmin(admin.ModelAdmin):
     #list_filter = ['outbound', 'received_on', 'expiry', 'sender', 'in_folders']
     list_filter = ['outbound', 'received_on',  'in_folders']
-    list_display = ('short_id', 'inout', 'sender_field', 'sender_ident',
+    list_display = ('short_id', 'device_friendly_name', 'inout', 'sender_field', 'sender_ident',
         'received_on', 'folder_list', 'admin_notes', 'admin_thumbs')
     list_per_page = 10
     date_hierarchy = 'received_on'
@@ -44,7 +44,7 @@ class FaxAdmin(admin.ModelAdmin):
         '/support/js/init.js'
         )
     save_on_top = True
-    search_fields = ['station_id', 'caller_id', 'notes']
+    search_fields = ['station_id', 'caller_id', 'sender__label', 'notes']
 
     def lookup_allowed(self, key, value):
         lookups = ['in_folders', 'deleted']
