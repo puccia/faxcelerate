@@ -191,6 +191,8 @@ class Fax(models.Model):
     
     comm_id = models.CharField(_('progressive ID'),
         max_length=9,primary_key=True,editable=False)
+    device = models.CharField(_('device'), max_length=12,
+        null=True, blank=True, editable=False) 
     station_id = models.CharField(_('Calling station ID'),
         max_length=32,editable=False,null=True)
     caller_id = models.CharField(_('calling number'),
@@ -255,6 +257,12 @@ class Fax(models.Model):
     DURATION = re.compile('(?P<min>\d+):(?P<sec>\d+)')
     CALL_LINE = re.compile(': Incoming (?P<calltype>\w+) call on controller (?P<ctrl>\d+) (from (?P<callerid>\d+))?')
     WRITE_LINE = re.compile(': Write fax in path .* to file (?P<filename>.+)\.$')
+
+    def device_friendly_name(self):
+        try:
+            return settings.DEVICE_NAMES[self.device]
+        except KeyError:
+            return self.device
 
     def delete(self):
         self.deleted = True
