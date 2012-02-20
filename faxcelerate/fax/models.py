@@ -398,7 +398,11 @@ class Fax(models.Model):
         
     def update_from_tiff(self):
         info = os.popen('%s -r %s' % (settings.FAXINFO, self.filename))
-        n = info.readline().rstrip() # TSI
+
+        tsi = info.readline().rstrip() # TSI
+        if not self.station_id:
+            self.station_id = tsi
+
         n = info.readline().rstrip() # Pages
         self.pages = int(n) # Pages
         info.readline() # Resolution
