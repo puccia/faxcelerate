@@ -36,18 +36,18 @@ class CustomIndexDashboard(Dashboard):
         site_name = get_admin_site_name(context)
         
         # append an app list module for "Applications"
-        self.children.append(modules.AppList(
+        self.children.append(modules.ModelList(
             _('Fax'),
             collapsible=False,
             column=1,
             exclude=('django.contrib.*',),
         ))
 
-        self.children.append(modules.AppList(
+        self.children.append(modules.ModelList(
             _('Administration'),
             column=1,
             collapsible=False,
-            models=('django.contrib.*',),
+            models=('django.contrib.auth.models.*',),
         ))
 
         if context['request'].user.has_perms('can_send_fax'):
