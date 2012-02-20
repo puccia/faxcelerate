@@ -52,18 +52,32 @@ def setup_logging():
 	logging.getLogger('').addHandler(syslog)
 
 def receive_fax():
-	(scriptname, filename, device, commid, reason, id, mystery2, msn) = [arg.rstrip() for arg in argv]
+	parameters = [arg.rstrip() for arg in argv]
+	try:
+		scriptname = parameters[0]
+		filename = parameters[1]
+		device = parameters[2]
+		commid = parameters[3]
+		reason = parameters[4]
+		cid = parameters[5]
+		mystery2 = parameters[6]
+		msn = parameters[7]
+	except IndexError:
+		pass
 	logging.info('Processing received fax %s' % commid)
 	logging.debug('Fax %s in file %s, received on device %s MSN %s, '
-		'reason "%s", id %s' % (commid, filename, device, msn, reason, id))
+		'reason "%s", id %s' % (commid, filename, device, msn, reason, cid))
 	fullfname = settings.FAX_SPOOL_DIR + '/%s' % filename
 	fax = Fax()
 	fax.received_on = datetime.fromtimestamp(os.path.getmtime(fullfname))
 	fax.filename = filename
-	fax.comm_id = commid
+	fax.device = device
+        fax.comm_id = commid
 	fax.msn = msn
-	fax.station_id = id
-	fax.reason = reason
+        fax.caller_id = cid
+	fax.msn = mystery2
+        
+        fax.reason = reason
 	try:
 		fax.update_from_tiff()
 	except ValueError, e:
@@ -74,7 +88,7 @@ def receive_fax():
 		else:
 			raise e
 	fax.update_from_logfile()
-	if fax.station_id == fax.callerid or fax.station_id == '-':
+	if fax.station_id == fax.caller_id or fax.station_id == '-':
 		fax.station_id = None
 	fax.set_sender()
 	fax.save()
