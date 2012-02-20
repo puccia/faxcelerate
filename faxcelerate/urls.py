@@ -21,7 +21,7 @@ __license__ 		= "GNU Affero GPL v. 3.0"
 __contact__			= "faxcelerate@corp.it"
 
 from django.conf.urls.defaults import *
-
+from django.shortcuts import redirect
 from django.contrib import admin
 from fax import admin as fax_admin
 from faxcelerate.settings import ADMIN_MEDIA_PREFIX
@@ -49,6 +49,6 @@ urlpatterns = patterns(prefix,
 (r'^' + fax_settings.FAX_MEDIA_PREFIX.lstrip('/') + '(?P<path>.*)$',
 	'django.views.static.serve',
 	{'document_root': os.path.dirname(faxcelerate.fax.__file__) + '/support'  }),
-	
+(r'^$', lambda r: redirect('/admin/fax/fax/'), {}),	
 
 )
