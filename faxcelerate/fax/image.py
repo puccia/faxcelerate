@@ -21,7 +21,8 @@ __license__ 		= "GNU Affero GPL v. 3.0"
 __contact__			= "faxcelerate@corp.it"
 
 from sys import argv
-from tempfile import mkstemp
+import tempfile
+import subprocess
 import os
 from cStringIO import StringIO
 
@@ -46,7 +47,7 @@ def has_opened_file(func):
     def wrapper(self, *args, **kwargs):
         if self.image is None:
             try:
-                (handle, self.tempname) = mkstemp(".tif")
+                (handle, self.tempname) = tempfile.mkstemp(".tif")
                 os.system("tiffcp -c none %s %s" %
                     (self.tiff_filename, self.tempname))
                 self.image = Image.open(self.tempname, "r")
@@ -239,28 +240,29 @@ class FaxImage(object):
         ni.save(out_file, "PNG")
         del ni
     
-    @has_opened_file    
-    def generate_pdf_stream_old(self):
-        (handle, tempname) = mkstemp(".pdf")
-        os.system("tiff2pdf -o %s %s" % (tempname, self.tiff_filename))
-        f = open(tempname, 'r')
-        os.close(handle)
-        os.remove(tempname)
-        return f
-        
-    def generate_pdf_stream(self, out_file=None):
-        pdf = os.popen("tiff2pdf %s" % self.tiff_filename)
-        fd = pdf.fileno()
-        from fcntl import fcntl, F_SETFL, F_GETFL
-        fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) & ~os.O_NDELAY )
-        counter = 0
-        for line in pdf:
-            out_file.write(line)
-        
+    def generate_pdf_stream_inner(self, out_file=None, page_size=None):
+        if page_size is None:
+            cmdline = ["tiff2pdf", self.tiff_filename] 
+        else:
+            cmdline = ["tiff2pdf", "-p%s" % page_size, self.tiff_filename]
+        converter = subprocess.Popen(cmdline, stdout=out_file)
+	converter.wait()
+
+    def generate_pdf_stream(self, out_file=None, page_size=None):
+        tmp = tempfile.NamedTemporaryFile()
+        self.generate_pdf_stream_inner(tmp, page_size)
+        content = file(tmp.name, 'r').read()
+        tmp.close()
+        out_file.write(content)
+
     def print_fax(self, printer=None):
         "Print the whole fax message through CUPS."
-        os.system('tiff2pdf -pA4 %s | lp -o media=A4 -d %s' % (self.tiff_filename, printer))
-        
+        tmp = tempfile.NamedTemporaryFile()
+        self.generate_pdf_stream_inner(tmp, 'A4')
+        cmdline = '/usr/bin/lp -o media=A4 -d %s %s' % (printer, tmp.name)
+        os.system(cmdline)
+        tmp.close()
+
     def generate_tiff_stream(self, out_file=None):
         orig = open(self.tiff_filename, "rb")
         for line in orig:
