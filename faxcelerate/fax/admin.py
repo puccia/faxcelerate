@@ -28,9 +28,10 @@ from django.core.exceptions import PermissionDenied
 
 class FaxAdmin(admin.ModelAdmin):
     #list_filter = ['outbound', 'received_on', 'expiry', 'sender', 'in_folders']
-    list_filter = ['outbound', 'received_on',  'in_folders']
-    list_display = ('short_id', 'device_friendly_name', 'inout', 'sender_field', 'sender_ident',
-        'received_on', 'folder_list', 'admin_notes', 'admin_thumbs')
+    list_filter = ['outbound', 'received_on',  'in_folders', 'verbose_status']
+    list_display = ('short_id', 'device_friendly_name', 'inout', 'verbose_status',
+        'sender_field', 'sender_ident', 'received_on', 'folder_list',
+        'admin_notes', 'admin_thumbs')
     list_per_page = 10
     date_hierarchy = 'received_on'
     fieldsets = (

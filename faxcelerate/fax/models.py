@@ -185,6 +185,12 @@ class FaxManager(models.Manager):
     def visible_to_user(self, user):
         return self.filter_queryset_for_user(self.get_query_set(), user)
 
+FAX_STATUS_CHOICES = (
+    (0, 'Pending attempt'),
+    (1, 'Success'),
+    (2, 'Error'),
+)
+
 class Fax(models.Model):
     """
     This class describes a single received fax message.
@@ -237,6 +243,8 @@ class Fax(models.Model):
         )
     reason = models.CharField(_('error reason'),
         max_length=200,blank=True,null=True,editable=False)
+    status = models.IntegerField(_('fax status'), choices=FAX_STATUS_CHOICES,
+        null=False, default=0)
     notes = models.TextField(_('Notes'),blank=True,null=True)
     deleted = models.BooleanField(_('Deleted'),
         null=False,default=False)
@@ -345,6 +353,14 @@ class Fax(models.Model):
         
     def related_image(self):
         return image.FaxImage(self)
+
+    def verbose_status(self):
+        if self.status == 0:
+            return _('Pending')
+        elif self.status == 1:
+            return _('OK')
+        else:
+            return _('Error')
         
     class Rotation(object):
         def __init__(self, fax):

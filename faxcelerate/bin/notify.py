@@ -42,9 +42,23 @@ TIFF_OUTPUT_DIR = os.path.join(settings.FAX_SPOOL_DIR, 'senttiff')
 if __name__ == '__main__':
     qfile, why = sys.argv[1:3]
     print qfile, why
+    try:
+        fax = Fax.objects.get(comm_id=info['commid'])
+    except Fax.DoesNotExist:
+        fax = Fax()
+    fax.comm_id = info['commid']
+    fax.local_sender = '%s@%s' % (info['mailaddr'], info['client'])
+    fax.received_on = datetime.fromtimestamp(float(info['tts']))
+    fax.outbound = True
+    fax.caller_id = info['number']
+    if error_message:
+        fax.reason = error_message
+
     # Exit if fax is still in queue.
     # Continue if fax is done or aborted due to an error
     if why in ('blocked', 'requeued'):
+        fax.status = 0
+        fax.save()
         sys.exit(1)
 
     # Scan qfile for info
@@ -62,14 +76,18 @@ if __name__ == '__main__':
 
     # Exit if job is not done
     if int(info['state']) < 7:
+        fax.save()
         sys.exit(1)
 
     error_message = None
-    if why != 'done':
+    if why != 'done' or int(info['state']) == 9:
         try:
             error_message = '%s: %s' % (why, info['status'])
         except KeyError:
             error_message = why
+        fax.status = 2
+    else:
+        fax.status = 1
     print 'OK'
 
     # List files
@@ -85,17 +103,9 @@ if __name__ == '__main__':
         % (output_file, ' '.join(input_files)))
     
     # Store in DB
-    fax = Fax()
-    fax.comm_id = info['commid']
     fax.filename = 'senttiff/%s.tif' % info['commid']
-    fax.local_sender = '%s@%s' % (info['mailaddr'], info['client'])
-    fax.caller_id = info['number']
-    fax.received_on = datetime.fromtimestamp(float(info['tts']))
     fax.time_to_receive = 1
-    fax.outbound = True
     fax.update_from_tiff()
-    if error_message:
-        fax.reason = error_message
     fax.save()
     from faxcelerate.fax.image import FaxImage
     FaxImage(fax).cache_thumbnails()

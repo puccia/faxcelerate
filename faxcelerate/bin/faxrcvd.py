@@ -76,7 +76,7 @@ def receive_fax():
 	fax.msn = msn
         fax.caller_id = cid
 	fax.msn = mystery2
-        
+	fax.status = 1 # Success        
         fax.reason = reason
 	try:
 		fax.update_from_tiff()
@@ -84,6 +84,7 @@ def receive_fax():
 		if not fax.reason == "":
 			# There was an error
 			fax.error = True
+			fax.status = 2 # Error
 			logging.info("Fax %s has an error; reason: %s" % fax.reason)
 		else:
 			raise e
