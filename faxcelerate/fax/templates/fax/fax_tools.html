@@ -4,6 +4,7 @@
 {% endblock %}
 {% block faxtools %}
 <ul>
+	<li><a href='{% url fax-report fax.comm_id %}'>[ {% trans 'Show report' %} ]</a></li>
 	<li><a href='{% url fax-serve "pdf" fax.comm_id %}'>[ {% trans 'Download as a PDF file ' %} ]</a></li>
 	<li><a href='{% url fax-serve "tiff" fax.comm_id %}'>[ {% trans 'Download as a TIFF file ' %} ]</a></li>
 	{% if not fax.folder_list %}<li><a href='/admin/fax/fax/{{ fax.comm_id }}/' onclick="return showAddAnotherPopup(this);">[ Archivia ]</a></li>{% endif %}

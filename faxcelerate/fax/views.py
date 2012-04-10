@@ -271,3 +271,15 @@ def fax_send(request):
     else:
         raise Exception
     
+def fax_report(request, commid=None):
+    fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
+    from django.template import Template, Context, loader
+    import cStringIO
+    import trml2pdf
+    t = loader.get_template('fax/rml/comm_report.rml')
+    c = Context({'fax': fax})
+    rml = t.render(c)
+    buf = trml2pdf.parseString(rml)
+    response = HttpResponse(mimetype='application/pdf')
+    response.write(buf)
+    return response

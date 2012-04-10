@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document>
+<template pageSize="(210mm, 297mm)" leftMargin="2.0cm" rightMargin="2.0cm" topMargin="2.0cm" bottomMargin="2.0cm" title="Report" author="Faxcelerate" allowSplitting="20">
+<pageTemplate id="first">
+                <frame id="main" x1="2cm" y1="3cm" width="17cm" height="23cm"/>
+</pageTemplate>
+</template>
+
+<stylesheet>
+        <paraStyle name="body" spaceAfter="10" fontSize="12" leading="14"/>
+        <blockTableStyle id="faxreport">
+                <blockFont name="Times-Roman" size="12"/>
+                <blockFont name="Times-Italic" size="12" start="0,0" stop="-1,0"/>
+                <blockFont name="Times-Bold" size="12" start="0,-1" stop="-1,-1"/>
+                <blockBottomPadding length="6"/>
+        </blockTableStyle>
+</stylesheet>
+
+<story>
+
+<h3>
+	Faxcelerate - Rapporto di {% if fax.outbound %} tramissione {% else %} ricezione {% endif %}
+</h3>
+
+<blockTable>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr><td>ID della comunicazione:</td><td>{{ fax.comm_id }}</td></tr>
+<tr><td>Data:</td><td>{{ fax.received_on }}</td></tr>
+<tr><td>TSI remoto:</td><td>{{ fax.station_id }}</td></tr>
+<tr><td>{% if fax.outbound %}Numero telefonico{% else %}Caller ID{% endif %}:</td><td>{{ fax.caller_id }}</td></tr>
+<tr><td>Pagine:</td><td>{{ fax.pages }}</td></tr>
+<tr><td></td></tr>
+<tr><td>Esito:</td><td>{% ifequal fax.status 0 %}In attesa{% else %}{% ifequal fax.status 1 %}OK{% else %}Errore: {{ fax.reason }}{% endifequal %}{% endifequal %}</td></tr>
+</blockTable>
+
+</story>
+
+</document>

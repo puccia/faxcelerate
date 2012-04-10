@@ -38,6 +38,7 @@ urlpatterns = patterns('',
 		{ 'queryset': Fax.objects,
                  'slug_field': 'comm_id',
                  'extra_context': width_calculation()}, 'fax-view'),
+	(r'^report/(?P<commid>\d+)/$', fax_report, {}, 'fax-report'),
 	(r'^bind_(?P<metadata_item>\w+)/(?P<commid>\d+)/$', bind, {}, 'fax-bind'),
         (r'^cache/(?P<commid>\d+)/(?P<pageno>\d+).png$', cache, {}, 'fax-cache'),        
         # Fax send page
