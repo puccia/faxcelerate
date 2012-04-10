@@ -27,6 +27,7 @@ __contact__			= "faxcelerate@corp.it"
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.template import RequestContext
 
 from image import FaxImage
 from faxcelerate.fax.models import Fax, SenderCID, SenderStationID
@@ -231,7 +232,6 @@ def fax_send(request):
             'phonebook': pbform,
             'adminform': {'model_admin': None},
         })
-        from django.template import RequestContext
         return RequestContext(request, context)
 
     class SendFaxForm(forms.Form):
@@ -270,7 +270,24 @@ def fax_send(request):
 
     else:
         raise Exception
-    
+   
+def fax_erase():
+	if not request.user.is_superuser:
+		raise PermissionDenied
+	deleted_faxes = Fax.objects.filter(deleted=True)
+	context = {'deleted_faxes': deleted_faxes}
+	if request.method == 'GET':
+		return render_to_response('fax/fax_erase.html', RequestContext(request, context))
+	elif request.method == 'POST':
+		for fax in deleted_faxes:
+			# Delete thumbnails
+        	fax.related_image().delete_thumbnails()
+			# Delete main TIFF file
+			os.unlink(fax.tiff_filename())
+			super(Fax, fax).delete()
+		return render_to_response('fax/fax_erase_end.html')
+			
+
 def fax_report(request, commid=None):
     fax = Fax.objects.visible_to_user(request.user).get(comm_id=commid)
     from django.template import Template, Context, loader

@@ -60,6 +60,11 @@ class CustomIndexDashboard(Dashboard):
                         'url': '/fax/send/',
                         'external': False,
                     },
+					{
+						'title': _('Permanently erase deleted fax messages'),
+						'url': '/fax/erase/',
+						'external': False,
+					}
                 )
             ))
 

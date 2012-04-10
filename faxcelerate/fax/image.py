@@ -180,6 +180,11 @@ class FaxImage(object):
                 del ni
         except IndexError:
             pass
+
+	def delete_thumbnails(self):
+		for i in range(self.page_count()):
+			os.unlink(settings.FAX_CACHE_NAME_FORMAT % (self.commid, i+1))
+		
             
     def thumbnail_links(self, page=None):
         def full_width():

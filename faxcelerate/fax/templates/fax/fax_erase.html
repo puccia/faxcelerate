@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Permanently erase deleted fax messages' %} | {% trans 'Gestione archivio telefax' %}{% endblock %}
+
+{% block content %}
+<form method="post">
+	<p>{% trans 'Do you want to permamently erase' %}
+		{{ deleted_faxes.count }}
+		{% trans 'fax messages?'}
+		</p>
+	<p><input type="submit" name="ok" value="OK"/></p>
+</form>
+{% endblock %}
