@@ -43,8 +43,8 @@ COMM_LOG_FORMAT = FAX_SPOOL_DIR + '/log/c%s'
 
 # These are the URL that your web server will map to the cached
 # thumbnail files and their actual location in the file system. 
-FAX_CACHE_URL_FORMAT = '/fax/cache/thumbnails/%s-%s.png'
-FAX_CACHE_NAME_FORMAT = '/var/tmp/faxcelerate-cache/thumbnails/%s/%s.png'
+FAX_CACHE_URL_FORMAT = '/fax/cache/thumbnails/%s/%s.png'
+FAX_CACHE_NAME_FORMAT = '/var/tmp/faxcelerate-cache/thumbnails/%s-%s.png'
 STATIC_ROOT = '/var/tmp/faxcelerate-cache/static'
 STATIC_URL = '/static'
 
