@@ -7,4 +7,4 @@ psycopg2
 wsgiref==0.1.2
 werkzeug
 reportlab
-http://www.satchmoproject.com/snapshots/trml2pdf-1.2.tar.gz
+http://www.satchmoproject.com/snapshots/trml2pdf-1.2.tar.gz#TRML2PDF-1.0

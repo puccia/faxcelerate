@@ -14,8 +14,10 @@ for l in open(os.path.join(os.path.dirname(__file__), 'requirements.txt')).readl
     l = l.strip()
     if '://' in l:
         dependency_links += [l]
-    else:
-        install_requires += [l]
+        _, l = l.rsplit('#', 1)
+        name, version = l.rsplit('-', 1)
+        l = '%s==%s' % (name, version)
+    install_requires += [l]
 
 setup(
     name = "faxcelerate",
