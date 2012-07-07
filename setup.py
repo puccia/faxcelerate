@@ -1,4 +1,4 @@
-import os
+import os, re
 from setuptools import setup
 
 # Utility function to read the README file.
@@ -19,6 +19,33 @@ for l in open(os.path.join(os.path.dirname(__file__), 'requirements.txt')).readl
         l = '%s==%s' % (name, version)
     install_requires += [l]
 
+def parse_requirements(file_name):
+    requirements = []
+    for line in open(file_name, 'r').read().split('\n'):
+        if re.match(r'(\s*#)|(\s*$)', line):
+            continue
+        if re.match(r'\s*-e\s+', line):
+            requirements.append(re.sub(r'\s*-e\s+.*#egg=(.*)$', r'\1', line))
+        elif re.match(r'\s*-f\s+', line):
+            pass
+        else:
+            requirements.append(line)
+
+    return requirements
+
+def parse_dependency_links(file_name):
+    dependency_links = []
+    for line in open(file_name, 'r').read().split('\n'):
+        if re.match(r'\s*-[ef]\s+', line):
+            dependency_links.append(re.sub(r'\s*-[ef]\s+', '', line))
+
+    return dependency_links
+
+req_file = os.path.join(os.path.dirname(__file__), 'requirements.txt')
+
+print '%r' % parse_requirements(req_file)
+print '%r' % parse_dependency_links(req_file)
+
 setup(
     name = "faxcelerate",
     version = "0.1.1",
@@ -35,6 +62,8 @@ setup(
         "Topic :: Communications :: Fax",
         "License :: OSI Approved :: GNU Affero General Public License v3",
     ],
-    install_requires=install_requires,
-    dependency_links=dependency_links,
+    #install_requires=install_requires,
+    #dependency_links=dependency_links,
+	install_requires=parse_requirements(req_file),
+	dependency_links=parse_dependency_links(req_file),
 )

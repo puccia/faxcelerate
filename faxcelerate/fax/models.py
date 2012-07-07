@@ -27,7 +27,19 @@ import os
 from django.db import models
 from django.template.loader import render_to_string
 from django.core.cache import cache
-from django.utils.translation import ugettext_lazy as _, ugettext as __
+from django.utils.translation import ugettext as __
+
+# Workaround for https://code.djangoproject.com/ticket/13965.
+# Remember to set DBINIT=1 when running "migrate".
+
+try:
+    if not os.environ['DBINIT'] == '':
+        from django.utils.translation import ugettext as _
+    else:
+        from django.utils.translation import ugettext_lazy as _
+except KeyError:
+    from django.utils.translation import ugettext_lazy as _
+    
 from django.shortcuts import render_to_response
 from django import template
 
@@ -307,9 +319,9 @@ class Fax(models.Model):
         
     def __unicode__(self):
         n = 'Fax ' + self.short_id()
-        if self.deleted: n += _(' (deleted)')
-        if self.received_on: n += _(' on %s') % self.received_on
-        if self.sender: n += _(' from %s') % self.sender
+        if self.deleted: n += __(' (deleted)')
+        if self.received_on: n += __(' on %s') % self.received_on
+        if self.sender: n += __(' from %s') % self.sender
         return n
 
     def admin_thumbs(self):

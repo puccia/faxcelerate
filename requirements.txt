@@ -2,9 +2,9 @@ Django<1.4
 PIL==1.1.7
 South<0.8
 django-extensions==0.6
-django-grappelli==2.3.1
+django-grappelli<2.4
 psycopg2
 wsgiref==0.1.2
 werkzeug
 reportlab
-http://www.satchmoproject.com/snapshots/trml2pdf-1.2.tar.gz#TRML2PDF-1.0
+-e http://www.satchmoproject.com/snapshots/trml2pdf-1.2.tar.gz#egg=TRML2PDF-1.0

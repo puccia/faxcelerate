@@ -44,8 +44,6 @@ urlpatterns = patterns(prefix,
 
 (r'^admin/', include(admin.site.urls)),
 (r'^grappelli/', include('grappelli.urls')),
-(r'^cache/thumbnails/(?P<path>.*)$', 'django.views.static.serve',
-	{'document_root': '/tmp/cache/thumbnails' }),
 (r'^' + fax_settings.FAX_MEDIA_PREFIX.lstrip('/') + '(?P<path>.*)$',
 	'django.views.static.serve',
 	{'document_root': os.path.dirname(faxcelerate.fax.__file__) + '/support'  }),

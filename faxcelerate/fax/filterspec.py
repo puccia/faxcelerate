@@ -31,8 +31,8 @@ import models
 from django.db import models as django_models
 
 class FolderFilterSpec(RelatedFilterSpec):
-    def __init__(self, f, request, params, model, model_admin):
-        super(FolderFilterSpec, self).__init__(f, request, params, model, model_admin)
+    def __init__(self, f, request, params, model, model_admin, **kwargs):
+        super(FolderFilterSpec, self).__init__(f, request, params, model, model_admin, **kwargs)
         self.lookup_kwarg2 = '%s__%s__in' % (f.name, f.rel.to._meta.pk.name)
         self.lookup_val2 = request.GET.get(self.lookup_kwarg2, None)
         self.lookup_kwarg3 = '%s__isnull' % (f.name)

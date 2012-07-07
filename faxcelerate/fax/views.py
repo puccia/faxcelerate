@@ -281,11 +281,11 @@ def fax_erase():
 	elif request.method == 'POST':
 		for fax in deleted_faxes:
 			# Delete thumbnails
-        	fax.related_image().delete_thumbnails()
+			fax.related_image().delete_thumbnails()
 			# Delete main TIFF file
 			os.unlink(fax.tiff_filename())
 			super(Fax, fax).delete()
-		return render_to_response('fax/fax_erase_end.html')
+			return render_to_response('fax/fax_erase_end.html')
 			
 
 def fax_report(request, commid=None):

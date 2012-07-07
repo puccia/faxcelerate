@@ -62,12 +62,12 @@ MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT.
 # Example: "http://media.lawrence.com"
-MEDIA_URL = ''
+MEDIA_URL = '/static/grappelli'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/static/grappelli/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '*7m=tjc*hf7e!8#4#1wegt2&voeri0nltr14#rr#lr7+a&19&y'
@@ -102,6 +102,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
+
 INSTALLED_APPS = (
     'grappelli.dashboard',
     'faxcelerate.fax',
@@ -112,6 +113,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+	'django.contrib.staticfiles',
 )
 
 if DEBUG:

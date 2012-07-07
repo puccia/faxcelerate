@@ -41,7 +41,7 @@ urlpatterns = patterns('',
 	(r'^report/(?P<commid>\d+)/$', fax_report, {}, 'fax-report'),
 	(r'^erase/', fax_erase, {}, 'fax-erase'),
 	(r'^bind_(?P<metadata_item>\w+)/(?P<commid>\d+)/$', bind, {}, 'fax-bind'),
-        (r'^cache/(?P<commid>\d+)/(?P<pageno>\d+).png$', cache, {}, 'fax-cache'),        
+        (r'^cache/thumbnails/(?P<commid>\d+)/(?P<pageno>\d+).png$', cache, {}, 'fax-cache'),        
         # Fax send page
         (r'^send/$', fax_send, {}, 'fax-send'),
 )

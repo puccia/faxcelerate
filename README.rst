@@ -27,6 +27,7 @@ Installation
 ============
 
 Beside a working installation of Hylafax, you will need:
+
 - Python 2.5 or later with virtualenv.
 - The Git version control software
 - a web server that supports WSGI (here Apache is shown as an example, 
@@ -60,8 +61,6 @@ In this example we'll use the following paths:
 
 		pip install -e git://github.com/puccia/faxcelerate#egg=faxcelerate
 	
-	(pip will complain about the lack of a ``setup.py`` file; this will be provided in a future release.)
-
 	Now the code will be in 
 	``/var/spool/faxcelerate-env/src/faxcelerate;`` you will thus find:
 
@@ -71,27 +70,36 @@ In this example we'll use the following paths:
 	-	the Django application ``fax`` rooted at 
 		``/var/local/faxcelerate-env/src/faxcelerate/faxcelerate/fax``.
 
-#.	Install the Python prerequisites::
-
-		cd /var/local/faxcelerate-env/src/faxcelerate
-		pip install -r requirements.txt
-
 #.	Create a database, if you are not using sqlite. For example, if you
 	are using PostgreSQL::
 	
 		su postgres
 		createuser -d -R -S -P faxcelerate
-		echo "CREATE DATABASE \"faxcelerate\" OWNER faxcelerate ENCODING 'UTF-8' LC_TYPE='en_US.UTF-8' LC_COLLATE='en_US.UTF-8' TEMPLATE template0" | LANG=en_US.UTF-8 psql
+		echo "CREATE DATABASE \"faxcelerate\" OWNER faxcelerate ENCODING 'UTF-8'" \
+		"LC_CTYPE='en_US.UTF-8' LC_COLLATE='en_US.UTF-8' TEMPLATE template0" | \
+		LANG=en_US.UTF-8 psql
 		exit
-
+		
+	You may want to change ``en_US`` to your configured locale.
 
 #.	Edit the ``local_settings.py`` file in the project directory to suit 
-	your configuration::
+	your configuration.
+	
+	Be sure to:
+	
+	- change the database name to what you have set up in the previous step, and set ``DATABASE_PASS`` accordingly;
+	- choose a path in ``FAX_CACHE_NAME_FORMAT`` that is suitable for your system.
 
-		cd faxcelerate
+#.  Remember to create the following directories:
+
+    - ``senttiff`` inside your main HylaFAX spool directory (e.g. ``/var/spool/hylafax/senttiff``);
+    - the thumbnail cache directory as configured in your ``local_settings.py`` file (e.g. ``/var/tmp/cache/thumbnails``).
+    
+    Both of these directories must be owned by your HylaFAX user (usually ``uucp`` on Debian systems).
 		
 #.	Now execute::
 
+        cd /var/local/faxcelerate-env/src/faxcelerate/faxcelerate
 		python manage.py syncdb
 	
 	to create and initialise the database. You will be asked for the 
@@ -99,7 +107,7 @@ In this example we'll use the following paths:
 
 #.	Execute::
 
-		python manage.py migrate
+		DBINIT=1 python manage.py migrate
 
 #.	Compile the localized message files::
 
@@ -117,8 +125,8 @@ In this example we'll use the following paths:
 	incoming and outgoing fax message. In ``faxrcvd``, right after the 
 	syntax check, you can add::
 	
-		/var/local/faxcelerate-env/bin/python /var/local/faxcelerate-env/src/faxcelerate/faxcelerate/bin/faxrcvd.py "$1" "$2" "$3" "$4" "$5" "$6" "$7"
+		/var/local/faxcelerate-env/bin/python /var/local/faxcelerate-env/src/faxcelerate/faxcelerate/bin/faxrcvd.py "$@"
 
 	In ``notify`` you can add::
 	
-		/var/local/faxcelerate-env/bin/python /var/local/faxcelerate-env/src/faxcelerate/faxcelerate/bin/notify.py "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
+		/var/local/faxcelerate-env/bin/python /var/local/faxcelerate-env/src/faxcelerate/faxcelerate/bin/notify.py "$@"
