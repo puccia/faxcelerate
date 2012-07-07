@@ -76,12 +76,12 @@ In this example we'll use the following paths:
 		cd /var/local/faxcelerate-env/src/faxcelerate
 		pip install -r requirements.txt
 
-#.	Create a database, if you are not using sqlite. For exampe, if you
+#.	Create a database, if you are not using sqlite. For example, if you
 	are using PostgreSQL::
 	
 		su postgres
 		createuser -d -R -S -P faxcelerate
-		createdb -O faxcelerate faxcelerate
+		echo "CREATE DATABASE \"faxcelerate\" OWNER faxcelerate ENCODING 'UTF-8' LC_TYPE='en_US.UTF-8' LC_COLLATE='en_US.UTF-8' TEMPLATE template0" | LANG=en_US.UTF-8 psql
 		exit
 
 
